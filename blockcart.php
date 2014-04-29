@@ -148,10 +148,8 @@ class BlockCart extends Module
 			else
 				Configuration::updateValue('PS_BLOCK_CART_AJAX', (int)($ajax));
 
-			if (!($productNbr = Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT')) || empty($productNbr))
+			if (($productNbr = (int)Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT') < 0))
 				$output .= $this->displayError($this->l('Please complete the "Products to display" field.'));
-			elseif ((int)($productNbr) == 0)
-				$output .= $this->displayError($this->l('Invalid number.'));
 			else
 			{
 				Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', (int)(Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT')));
@@ -309,8 +307,8 @@ class BlockCart extends Module
 	public function getConfigFieldsValues()
 	{
 		return array(
-			'PS_BLOCK_CART_AJAX' => Tools::getValue('PS_BLOCK_CART_AJAX', Configuration::get('PS_BLOCK_CART_AJAX')),
-			'PS_BLOCK_CART_XSELL_LIMIT' => Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT', Configuration::get('PS_BLOCK_CART_XSELL_LIMIT'))
+			'PS_BLOCK_CART_AJAX' => (bool)Tools::getValue('PS_BLOCK_CART_AJAX', Configuration::get('PS_BLOCK_CART_AJAX')),
+			'PS_BLOCK_CART_XSELL_LIMIT' => (int)Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT', Configuration::get('PS_BLOCK_CART_XSELL_LIMIT'))
 		);
 	}
 }
