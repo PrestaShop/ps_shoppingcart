@@ -733,7 +733,7 @@ $(document).ready(function(){
 		}
 	);
 
-	$('.delete_voucher').live('click', function() {
+	$('.delete_voucher').on('click', function() {
 		$.ajax({
 			type: 'POST',
 			headers: { "cache-control": "no-cache" },
