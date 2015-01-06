@@ -38,7 +38,7 @@ class BlockCart extends Module
 		$this->need_instance = 0;
 
 		$this->bootstrap = true;
-		parent::__construct();	
+		parent::__construct();
 
 		$this->displayName = $this->l('Cart block');
 		$this->description = $this->l('Adds a block containing the customer\'s shopping cart.');
@@ -76,7 +76,7 @@ class BlockCart extends Module
 			$totalToPayWithoutTaxes = $params['cart']->getOrderTotal(false);
 			$this->smarty->assign('tax_cost', Tools::displayPrice($totalToPay - $totalToPayWithoutTaxes, $currency));
 		}
-		
+
 		// The cart content is altered for display
 		foreach ($cart_rules as &$cart_rule)
 		{
@@ -90,13 +90,18 @@ class BlockCart extends Module
 			if ($cart_rule['gift_product'])
 			{
 				foreach ($products as &$product)
-					if ($product['id_product'] == $cart_rule['gift_product'] && $product['id_product_attribute'] == $cart_rule['gift_product_attribute'])
+					if ($product['id_product'] == $cart_rule['gift_product']
+						&& $product['id_product_attribute'] == $cart_rule['gift_product_attribute'])
 					{
 						$product['is_gift'] = 1;
-						$product['total_wt'] = Tools::ps_round($product['total_wt'] - $product['price_wt'], (int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
-						$product['total'] = Tools::ps_round($product['total'] - $product['price'], (int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
-						$cart_rule['value_real'] = Tools::ps_round($cart_rule['value_real'] - $product['price_wt'], (int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
-						$cart_rule['value_tax_exc'] = Tools::ps_round($cart_rule['value_tax_exc'] - $product['price'], (int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
+						$product['total_wt'] = Tools::ps_round($product['total_wt'] - $product['price_wt'],
+							(int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
+						$product['total'] = Tools::ps_round($product['total'] - $product['price'],
+							(int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
+						$cart_rule['value_real'] = Tools::ps_round($cart_rule['value_real'] - $product['price_wt'],
+							(int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
+						$cart_rule['value_tax_exc'] = Tools::ps_round($cart_rule['value_tax_exc'] - $product['price'],
+							(int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
 					}
 			}
 		}
@@ -104,7 +109,8 @@ class BlockCart extends Module
 		$total_free_shipping = 0;
 		if ($free_shipping = Tools::convertPrice(floatval(Configuration::get('PS_SHIPPING_FREE_PRICE')), $currency))
 		{
-			$total_free_shipping =  floatval($free_shipping - ($params['cart']->getOrderTotal(true, Cart::ONLY_PRODUCTS) + $params['cart']->getOrderTotal(true, Cart::ONLY_DISCOUNTS)));
+			$total_free_shipping =  floatval($free_shipping - ($params['cart']->getOrderTotal(true, Cart::ONLY_PRODUCTS) +
+				$params['cart']->getOrderTotal(true, Cart::ONLY_DISCOUNTS)));
 			$discounts = $params['cart']->getCartRules(CartRule::FILTER_ACTION_SHIPPING);
 			if ($total_free_shipping < 0)
 				$total_free_shipping = 0;
@@ -198,11 +204,14 @@ class BlockCart extends Module
 
 		$this->assignContentVars($params);
 		$res = Tools::jsonDecode($this->display(__FILE__, 'blockcart-json.tpl'), true);
-		if (is_array($res) && $id_product = Tools::getValue('id_product'))
+
+		if (is_array($res) && $id_product = Tools::getValue('id_product') && Module::isEnabled('crossselling'))
 		{
-			$this->smarty->assign('orderProducts', OrderDetail::getCrossSells($id_product, $this->context->language->id, Configuration::get('PS_BLOCK_CART_XSELL_LIMIT')));
+			$this->smarty->assign('orderProducts', OrderDetail::getCrossSells($id_product, $this->context->language->id,
+				Configuration::get('PS_BLOCK_CART_XSELL_LIMIT')));
 			$res['crossSelling'] = $this->display(__FILE__, 'crossselling.tpl');
 		}
+
 		$res = Tools::jsonEncode($res);
 		return $res;
 	}
@@ -228,19 +237,19 @@ class BlockCart extends Module
 			$this->context->controller->addJqueryPlugin(array('scrollTo', 'serialScroll', 'bxslider'));
 		}
 	}
-	
+
 	public function hookTop($params)
 	{
 		$params['blockcart_top'] = true;
 		return $this->hookRightColumn($params);
 	}
-	
+
 	public function hookDisplayNav($params)
 	{
 		$params['blockcart_top'] = true;
 		return $this->hookTop($params);
 	}
-	
+
 	public function renderForm()
 	{
 		$fields_form = array(
@@ -282,7 +291,7 @@ class BlockCart extends Module
 				)
 			),
 		);
-		
+
 		$helper = new HelperForm();
 		$helper->show_toolbar = false;
 		$helper->table =  $this->table;
@@ -293,7 +302,8 @@ class BlockCart extends Module
 
 		$helper->identifier = $this->identifier;
 		$helper->submit_action = 'submitBlockCart';
-		$helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab.'&module_name='.$this->name;
+		$helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab
+		.'&module_name='.$this->name;
 		$helper->token = Tools::getAdminTokenLite('AdminModules');
 		$helper->tpl_vars = array(
 			'fields_value' => $this->getConfigFieldsValues(),
@@ -303,7 +313,7 @@ class BlockCart extends Module
 
 		return $helper->generateForm(array($fields_form));
 	}
-	
+
 	public function getConfigFieldsValues()
 	{
 		return array(
