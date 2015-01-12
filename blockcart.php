@@ -283,10 +283,10 @@ class BlockCart extends Module
 						),
 					array(
 						'type' => 'switch',
-						'label' => $this->l('Show crossselling'),
+						'label' => $this->l('Show cross-selling'),
 						'name' => 'PS_BLOCK_CART_SHOW_CROSSSELLING',
 						'is_bool' => true,
-						'desc' => $this->l('Activate crossselling visualization for the cart.'),
+						'desc' => $this->l('Activate cross-selling visualization for the cart.'),
 						'values' => array(
 								array(
 									'id' => 'active_on',
