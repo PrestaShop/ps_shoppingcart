@@ -208,7 +208,7 @@ class BlockCart extends Module
 		$this->assignContentVars($params);
 		$res = Tools::jsonDecode($this->display(__FILE__, 'blockcart-json.tpl'), true);
 
-		if (is_array($res) && $id_product = Tools::getValue('id_product') && Configuration::get('PS_BLOCK_CART_SHOW_CROSSSELLING'))
+		if (is_array($res) && ($id_product = Tools::getValue('id_product')) && Configuration::get('PS_BLOCK_CART_SHOW_CROSSSELLING'))
 		{
 			$this->smarty->assign('orderProducts', OrderDetail::getCrossSells($id_product, $this->context->language->id,
 				Configuration::get('PS_BLOCK_CART_XSELL_LIMIT')));
