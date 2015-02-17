@@ -131,8 +131,8 @@ class BlockCart extends Module
 		$this->smarty->assign(array(
 			'products' => $products,
 			'customizedDatas' => Product::getAllCustomizedDatas((int)($params['cart']->id)),
-			'CUSTOMIZE_FILE' => _CUSTOMIZE_FILE_,
-			'CUSTOMIZE_TEXTFIELD' => _CUSTOMIZE_TEXTFIELD_,
+			'CUSTOMIZE_FILE' => Product::CUSTOMIZE_FILE,
+			'CUSTOMIZE_TEXTFIELD' => Product::CUSTOMIZE_TEXTFIELD,
 			'discounts' => $cart_rules,
 			'nb_total_products' => (int)($nbTotalProducts),
 			'shipping_cost' => $shipping_cost,
