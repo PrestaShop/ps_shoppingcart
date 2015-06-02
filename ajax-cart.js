@@ -745,6 +745,7 @@ $(document).ready(function(){
 			}
 		});
 		$(this).parent().parent().remove();
+		ajaxCart.refresh();
 		if ($('body').attr('id') == 'order' || $('body').attr('id') == 'order-opc')
 		{
 			if (typeof(updateAddressSelection) != 'undefined')
