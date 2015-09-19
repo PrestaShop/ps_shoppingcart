@@ -27,13 +27,15 @@
 if (!defined('_PS_VERSION_'))
 	exit;
 
-class BlockCart extends Module
+use PrestaShop\PrestaShop\Core\Business\Module\WidgetInterface;
+
+class BlockCart extends Module implements WidgetInterface
 {
 	public function __construct()
 	{
 		$this->name = 'blockcart';
 		$this->tab = 'front_office_features';
-		$this->version = '1.6.0';
+		$this->version = '2.0.0';
 		$this->author = 'PrestaShop';
 		$this->need_instance = 0;
 
@@ -42,123 +44,18 @@ class BlockCart extends Module
 
 		$this->displayName = $this->l('Cart block');
 		$this->description = $this->l('Adds a block containing the customer\'s shopping cart.');
-		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
+		$this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
 	}
 
-	public function assignContentVars($params)
+	public function getWidgetVariables($hookName, array $params)
 	{
-		global $errors;
+		return (new Adapter_CartPresenter)->present($params['cart']);
+	}
 
-		// Set currency
-		if ((int)$params['cart']->id_currency && (int)$params['cart']->id_currency != $this->context->currency->id)
-			$currency = new Currency((int)$params['cart']->id_currency);
-		else
-			$currency = $this->context->currency;
-
-		$taxCalculationMethod = Group::getPriceDisplayMethod((int)Group::getCurrent()->id);
-
-		$useTax = !($taxCalculationMethod == PS_TAX_EXC);
-
-		$products = $params['cart']->getProducts(true);
-		$nbTotalProducts = 0;
-		foreach ($products as $product)
-			$nbTotalProducts += (int)$product['cart_quantity'];
-		$cart_rules = $params['cart']->getCartRules();
-
-		if (empty($cart_rules))
-			$base_shipping = $params['cart']->getOrderTotal($useTax, Cart::ONLY_SHIPPING);
-		else
-		{
-			$base_shipping_with_tax    = $params['cart']->getOrderTotal(true, Cart::ONLY_SHIPPING);
-			$base_shipping_without_tax = $params['cart']->getOrderTotal(false, Cart::ONLY_SHIPPING);
-			if ($useTax)
-				$base_shipping = $base_shipping_with_tax;
-			else
-				$base_shipping = $base_shipping_without_tax;
-		}
-		$shipping_cost = Tools::displayPrice($base_shipping, $currency);
-		$shipping_cost_float = Tools::convertPrice($base_shipping, $currency);
-		$wrappingCost = (float)($params['cart']->getOrderTotal($useTax, Cart::ONLY_WRAPPING));
-		$totalToPay = $params['cart']->getOrderTotal($useTax);
-
-		if ($useTax && Configuration::get('PS_TAX_DISPLAY') == 1)
-		{
-			$totalToPayWithoutTaxes = $params['cart']->getOrderTotal(false);
-			$this->smarty->assign('tax_cost', Tools::displayPrice($totalToPay - $totalToPayWithoutTaxes, $currency));
-		}
-
-		// The cart content is altered for display
-		foreach ($cart_rules as &$cart_rule)
-		{
-			if ($cart_rule['free_shipping'])
-			{
-				$shipping_cost = Tools::displayPrice(0, $currency);
-				$shipping_cost_float = 0;
-				$cart_rule['value_real'] -= Tools::convertPrice($base_shipping_with_tax, $currency);
-				$cart_rule['value_tax_exc'] = Tools::convertPrice($base_shipping_without_tax, $currency);
-			}
-			if ($cart_rule['gift_product'])
-			{
-				foreach ($products as $key => &$product)
-				{
-					if ($product['id_product'] == $cart_rule['gift_product']
-						&& $product['id_product_attribute'] == $cart_rule['gift_product_attribute'])
-					{
-						$product['total_wt'] = Tools::ps_round($product['total_wt'] - $product['price_wt'],
-							(int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
-						$product['total'] = Tools::ps_round($product['total'] - $product['price'],
-							(int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
-						if ($product['cart_quantity'] > 1)
-						{
-							array_splice($products, $key, 0, array($product));
-							$products[$key]['cart_quantity'] = $product['cart_quantity'] - 1;
-							$product['cart_quantity'] = 1;
-						}
-						$product['is_gift'] = 1;
-						$cart_rule['value_real'] = Tools::ps_round($cart_rule['value_real'] - $product['price_wt'],
-							(int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
-						$cart_rule['value_tax_exc'] = Tools::ps_round($cart_rule['value_tax_exc'] - $product['price'],
-							(int)$currency->decimals * _PS_PRICE_DISPLAY_PRECISION_);
-					}
-				}
-			}
-		}
-
-		$total_free_shipping = 0;
-		if ($free_shipping = Tools::convertPrice(floatval(Configuration::get('PS_SHIPPING_FREE_PRICE')), $currency))
-		{
-			$total_free_shipping =  floatval($free_shipping - ($params['cart']->getOrderTotal(true, Cart::ONLY_PRODUCTS) +
-				$params['cart']->getOrderTotal(true, Cart::ONLY_DISCOUNTS)));
-			$discounts = $params['cart']->getCartRules(CartRule::FILTER_ACTION_SHIPPING);
-			if ($total_free_shipping < 0)
-				$total_free_shipping = 0;
-			if (is_array($discounts) && count($discounts))
-				$total_free_shipping = 0;
-		}
-
-		$this->smarty->assign(array(
-			'products' => $products,
-			'customizedDatas' => Product::getAllCustomizedDatas((int)($params['cart']->id)),
-			'CUSTOMIZE_FILE' => Product::CUSTOMIZE_FILE,
-			'CUSTOMIZE_TEXTFIELD' => Product::CUSTOMIZE_TEXTFIELD,
-			'discounts' => $cart_rules,
-			'nb_total_products' => (int)($nbTotalProducts),
-			'shipping_cost' => $shipping_cost,
-			'shipping_cost_float' => $shipping_cost_float,
-			'show_wrapping' => $wrappingCost > 0 ? true : false,
-			'show_tax' => (int)(Configuration::get('PS_TAX_DISPLAY') == 1 && (int)Configuration::get('PS_TAX')),
-			'wrapping_cost' => Tools::displayPrice($wrappingCost, $currency),
-			'product_total' => Tools::displayPrice($params['cart']->getOrderTotal($useTax, Cart::BOTH_WITHOUT_SHIPPING), $currency),
-			'total' => Tools::displayPrice($totalToPay, $currency),
-			'order_process' => Configuration::get('PS_ORDER_PROCESS_TYPE') ? 'order-opc' : 'order',
-			'ajax_allowed' => (int)(Configuration::get('PS_BLOCK_CART_AJAX')) == 1 ? true : false,
-			'static_token' => Tools::getToken(false),
-			'free_shipping' => $total_free_shipping
-		));
-		if (count($errors))
-			$this->smarty->assign('errors', $errors);
-		if (isset($this->context->cookie->ajax_blockcart_display))
-			$this->smarty->assign('colapseExpandStatus', $this->context->cookie->ajax_blockcart_display);
+	public function renderWidget($hookName, array $params)
+	{
+		$this->smarty->assign($this->getWidgetVariables($hookName, $params));
+		return $this->display(__FILE__, 'blockcart.tpl');
 	}
 
 	public function getContent()
@@ -187,35 +84,13 @@ class BlockCart extends Module
 
 	public function install()
 	{
-		if (
-			parent::install() == false
-			|| $this->registerHook('top') == false
-			|| $this->registerHook('header') == false
-			|| $this->registerHook('actionCartListOverride') == false
-			|| Configuration::updateValue('PS_BLOCK_CART_AJAX', 1) == false
-			|| Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', 12) == false
-			|| Configuration::updateValue('PS_BLOCK_CART_SHOW_CROSSSELLING', 1) == false)
-			return false;
-		return true;
-	}
-
-	public function hookRightColumn($params)
-	{
-		if (Configuration::get('PS_CATALOG_MODE'))
-			return;
-
-		// @todo this variable seems not used
-		$this->smarty->assign(array(
-			'order_page' => (strpos($_SERVER['PHP_SELF'], 'order') !== false),
-			'blockcart_top' => (isset($params['blockcart_top']) && $params['blockcart_top']) ? true : false,
-		));
-		$this->assignContentVars($params);
-		return $this->display(__FILE__, 'blockcart.tpl');
-	}
-
-	public function hookLeftColumn($params)
-	{
-		return $this->hookRightColumn($params);
+		return
+			parent::install()
+				&& $this->registerHook('actionCartListOverride')
+				&& Configuration::updateValue('PS_BLOCK_CART_AJAX', 1)
+				&& Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', 12)
+				&& Configuration::updateValue('PS_BLOCK_CART_SHOW_CROSSSELLING', 1)
+		;
 	}
 
 	public function hookAjaxCall($params)
@@ -244,31 +119,6 @@ class BlockCart extends Module
 
 		$this->assignContentVars(array('cookie' => $this->context->cookie, 'cart' => $this->context->cart));
 		$params['json'] = $this->display(__FILE__, 'blockcart-json.tpl');
-	}
-
-	public function hookHeader()
-	{
-		if (Configuration::get('PS_CATALOG_MODE'))
-			return;
-
-		$this->context->controller->addCSS(($this->_path).'blockcart.css', 'all');
-		if ((int)(Configuration::get('PS_BLOCK_CART_AJAX')))
-		{
-			$this->context->controller->addJS(($this->_path).'ajax-cart.js');
-			$this->context->controller->addJqueryPlugin(array('scrollTo', 'serialScroll', 'bxslider'));
-		}
-	}
-
-	public function hookTop($params)
-	{
-		$params['blockcart_top'] = true;
-		return $this->hookRightColumn($params);
-	}
-
-	public function hookDisplayNav($params)
-	{
-		$params['blockcart_top'] = true;
-		return $this->hookTop($params);
 	}
 
 	public function renderForm()
