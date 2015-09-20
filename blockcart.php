@@ -47,9 +47,19 @@ class BlockCart extends Module implements WidgetInterface
 		$this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
 	}
 
+	public function hookHeader()
+	{
+		if (Configuration::get('PS_BLOCK_CART_AJAX')) {
+			$this->context->controller->addJS($this->_path . 'blockcart.js');
+		}
+	}
+
 	public function getWidgetVariables($hookName, array $params)
 	{
-		return ['cart' => (new Adapter_CartPresenter)->present($params['cart'])];
+		return [
+			'cart' => (new Adapter_CartPresenter)->present($params['cart']),
+			'refresh_url' => $this->context->link->getModuleLink('blockcart', 'ajax')
+		];
 	}
 
 	public function renderWidget($hookName, array $params)
@@ -87,29 +97,12 @@ class BlockCart extends Module implements WidgetInterface
 		return
 			parent::install()
 				&& $this->registerHook('actionCartListOverride')
+				&& $this->registerHook('header')
+				&& $this->registerHook('displayTop')
 				&& Configuration::updateValue('PS_BLOCK_CART_AJAX', 1)
 				&& Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', 12)
 				&& Configuration::updateValue('PS_BLOCK_CART_SHOW_CROSSSELLING', 1)
 		;
-	}
-
-	public function hookAjaxCall($params)
-	{
-		if (Configuration::get('PS_CATALOG_MODE'))
-			return;
-
-		$this->assignContentVars($params);
-		$res = Tools::jsonDecode($this->display(__FILE__, 'blockcart-json.tpl'), true);
-
-		if (is_array($res) && ($id_product = Tools::getValue('id_product')) && Configuration::get('PS_BLOCK_CART_SHOW_CROSSSELLING'))
-		{
-			$this->smarty->assign('orderProducts', OrderDetail::getCrossSells($id_product, $this->context->language->id,
-				Configuration::get('PS_BLOCK_CART_XSELL_LIMIT')));
-			$res['crossSelling'] = $this->display(__FILE__, 'crossselling.tpl');
-		}
-
-		$res = Tools::jsonEncode($res);
-		return $res;
 	}
 
 	public function hookActionCartListOverride($params)

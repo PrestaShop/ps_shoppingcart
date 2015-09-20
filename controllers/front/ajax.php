@@ -23,7 +23,19 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
-// @TODO Find the reason why the blockcart.php is includ multiple time
-$context = Context::getContext();
-$blockCart = Module::getInstanceByName('blockcart');
-echo $blockCart->hookAjaxCall(array('cookie' => $context->cookie, 'cart' => $context->cart));
+
+class BlockCartAjaxModuleFrontController extends ModuleFrontController
+{
+    public $ssl = true;
+    public $display_column_left = false;
+
+    /**
+    * @see FrontController::initContent()
+    */
+    public function initContent()
+    {
+        $html = $this->module->renderWidget(null, ['cart' => $this->context->cart]);
+        ob_end_clean();
+        die($html);
+    }
+}

@@ -1,4 +1,4 @@
-<div class="cart-preview">
+<div class="blockcart cart-preview" data-refresh-url="{$refresh_url}">
   <div class="header">
     <span>{l s='Cart' mod='blockcart'}</span>
     <span>{$cart.summary_string}</span>
