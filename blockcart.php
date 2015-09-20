@@ -96,22 +96,12 @@ class BlockCart extends Module implements WidgetInterface
 	{
 		return
 			parent::install()
-				&& $this->registerHook('actionCartListOverride')
 				&& $this->registerHook('header')
 				&& $this->registerHook('displayTop')
 				&& Configuration::updateValue('PS_BLOCK_CART_AJAX', 1)
 				&& Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', 12)
 				&& Configuration::updateValue('PS_BLOCK_CART_SHOW_CROSSSELLING', 1)
 		;
-	}
-
-	public function hookActionCartListOverride($params)
-	{
-		if (!Configuration::get('PS_BLOCK_CART_AJAX'))
-			return;
-
-		$this->assignContentVars(array('cookie' => $this->context->cookie, 'cart' => $this->context->cart));
-		$params['json'] = $this->display(__FILE__, 'blockcart-json.tpl');
 	}
 
 	public function renderForm()
