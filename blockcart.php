@@ -49,7 +49,7 @@ class BlockCart extends Module implements WidgetInterface
 
 	public function getWidgetVariables($hookName, array $params)
 	{
-		return (new Adapter_CartPresenter)->present($params['cart']);
+		return ['cart' => (new Adapter_CartPresenter)->present($params['cart'])];
 	}
 
 	public function renderWidget($hookName, array $params)
