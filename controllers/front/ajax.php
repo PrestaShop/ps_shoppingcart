@@ -34,8 +34,21 @@ class BlockCartAjaxModuleFrontController extends ModuleFrontController
     */
     public function initContent()
     {
-        $html = $this->module->renderWidget(null, ['cart' => $this->context->cart]);
+        $modal = null;
+
+        if (Tools::getValue('action') === 'add-to-cart') {
+            $modal = $this->module->renderModal(
+                $this->context->cart,
+                Tools::getValue('id_product'),
+                Tools::getValue('id_product_attribute')
+            );
+        }
+
         ob_end_clean();
-        die($html);
+        header('Content-Type: application/json');
+        die(json_encode([
+            'preview' => $this->module->renderWidget(null, ['cart' => $this->context->cart]),
+            'modal'   => $modal
+        ]));
     }
 }

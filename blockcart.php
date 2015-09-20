@@ -68,6 +68,22 @@ class BlockCart extends Module implements WidgetInterface
 		return $this->display(__FILE__, 'blockcart.tpl');
 	}
 
+	public function renderModal(Cart $cart, $id_product, $id_product_attribute)
+	{
+		$data = (new Adapter_CartPresenter)->present($cart);
+		$product = null;
+		foreach ($data['products'] as $p) {
+			if ($p['id_product'] == $id_product && $p['id_product_attribute'] == $id_product_attribute) {
+				$product = $p;
+				break;
+			}
+		}
+
+		$this->smarty->assign('product', $product);
+
+		return $this->display(__FILE__, 'modal.tpl');
+	}
+
 	public function getContent()
 	{
 		$output = '';
