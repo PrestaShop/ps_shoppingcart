@@ -23,21 +23,32 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
-include(dirname(__FILE__).'/../../config/config.inc.php');
-include(dirname(__FILE__).'/../../init.php');
-if ( isset($_POST['ajax_blockcart_display']) || isset($_GET['ajax_blockcart_display']))
-{
-	if (Tools::getValue('ajax_blockcart_display') == 'collapse')
-	{
-		Context::getContext()->cookie->ajax_blockcart_display = 'collapsed';
-		die ('collapse status of the blockcart module updated in the cookie');
-	}
-	if (Tools::getValue('ajax_blockcart_display') == 'expand')
-	{
-		Context::getContext()->cookie->ajax_blockcart_display = 'expanded';
-		die ('expand status of the blockcart module updated in the cookie');
-	}
-	die ('ERROR : bad status setted. Only collapse or expand status of the blockcart module are available.');
-}
-else die('ERROR : No status setted.');
 
+class BlockCartAjaxModuleFrontController extends ModuleFrontController
+{
+    public $ssl = true;
+    public $display_column_left = false;
+
+    /**
+    * @see FrontController::initContent()
+    */
+    public function initContent()
+    {
+        $modal = null;
+
+        if (Tools::getValue('action') === 'add-to-cart') {
+            $modal = $this->module->renderModal(
+                $this->context->cart,
+                Tools::getValue('id_product'),
+                Tools::getValue('id_product_attribute')
+            );
+        }
+
+        ob_end_clean();
+        header('Content-Type: application/json');
+        die(json_encode([
+            'preview' => $this->module->renderWidget(null, ['cart' => $this->context->cart]),
+            'modal'   => $modal
+        ]));
+    }
+}
