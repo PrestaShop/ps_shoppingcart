@@ -56,9 +56,17 @@ class BlockCart extends Module implements WidgetInterface
 
 	public function getWidgetVariables($hookName, array $params)
 	{
+		$cart_url = $this->context->link->getPageLink(
+			'cart',
+			null,
+			$this->context->language->id,
+			['action' => 'show']
+		);
+
 		return [
 			'cart' => (new Adapter_CartPresenter)->present($params['cart']),
-			'refresh_url' => $this->context->link->getModuleLink('blockcart', 'ajax')
+			'refresh_url' => $this->context->link->getModuleLink('blockcart', 'ajax'),
+			'cart_url' => $cart_url
 		];
 	}
 

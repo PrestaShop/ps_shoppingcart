@@ -1,7 +1,9 @@
 <div class="blockcart cart-preview" data-refresh-url="{$refresh_url}">
   <div class="header">
-    <span>{l s='Cart' mod='blockcart'}</span>
-    <span>{$cart.summary_string}</span>
+    <a rel="nofollow" href="{$cart_url}">
+      <span>{l s='Cart' mod='blockcart'}</span>
+      <span>{$cart.summary_string}</span>
+    </a>
   </div>
   <div class="body">
     <ul>
