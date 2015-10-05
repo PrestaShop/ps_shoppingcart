@@ -57,10 +57,9 @@ class BlockCart extends Module implements WidgetInterface
 	public function getWidgetVariables($hookName, array $params)
 	{
 		$cart_url = $this->context->link->getPageLink(
-			'cart',
+			Configuration::get('PS_ORDER_PROCESS_TYPE') ? 'order-opc' : 'order',
 			null,
-			$this->context->language->id,
-			['action' => 'show']
+			$this->context->language->id
 		);
 
 		return [
