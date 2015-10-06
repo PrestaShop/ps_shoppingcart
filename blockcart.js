@@ -1,6 +1,25 @@
-/* global $ */
+/* global $, prestashop */
 
 $(document).ready(function () {
+    prestashop.on('cart updated', function (event) {
+        var refreshURL = $('.blockcart').data('refresh-url');
+        var requestData = {};
+
+        if (event && event.reason) {
+            requestData = {
+                id_product_attribute: event.reason.idProductAttribute,
+                id_product: event.reason.idProduct,
+                action: event.reason.linkAction
+            };
+        }
+
+        $.post(refreshURL, requestData).then(function (resp) {
+            $('.blockcart').replaceWith(resp.preview);
+            if (resp.modal) {
+                showModal(resp.modal);
+            }
+        });
+    });
 
     function showModal (modal) {
         $(document.body).append(modal);
@@ -22,18 +41,8 @@ $(document).ready(function () {
             var actionURL = event.target.href;
             $.post(actionURL, null, null, 'json').then(function () {
                 // If succesful, refresh cart preview
-                var refreshURL = $('.blockcart').data('refresh-url');
-                var actionSettings = event.target.dataset;
-                var requestData = {
-                    id_product_attribute: actionSettings.idProductAttribute,
-                    id_product: actionSettings.idProduct,
-                    action: actionSettings.linkAction
-                };
-                $.post(refreshURL, requestData).then(function (resp) {
-                    $('.blockcart').replaceWith(resp.preview);
-                    if (resp.modal) {
-                        showModal(resp.modal);
-                    }
+                prestashop.emit('cart updated', {
+                    reason: event.target.dataset
                 });
             });
         }
