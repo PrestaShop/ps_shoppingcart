@@ -24,6 +24,8 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
+use PrestaShop\PrestaShop\Adapter\Cart\CartPresenter;
+
 if (!defined('_PS_VERSION_'))
 	exit;
 
@@ -64,7 +66,7 @@ class BlockCart extends Module implements WidgetInterface
 		);
 
 		return [
-			'cart' => (new Adapter_CartPresenter)->present($params['cart']),
+			'cart' => (new CartPresenter)->present($params['cart']),
 			'refresh_url' => $this->context->link->getModuleLink('blockcart', 'ajax'),
 			'cart_url' => $cart_url
 		];
@@ -78,7 +80,7 @@ class BlockCart extends Module implements WidgetInterface
 
 	public function renderModal(Cart $cart, $id_product, $id_product_attribute)
 	{
-		$data = (new Adapter_CartPresenter)->present($cart);
+		$data = (new CartPresenter)->present($cart);
 		$product = null;
 		foreach ($data['products'] as $p) {
 			if ($p['id_product'] == $id_product && $p['id_product_attribute'] == $id_product_attribute) {
