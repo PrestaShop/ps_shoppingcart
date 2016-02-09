@@ -89,7 +89,10 @@ class BlockCart extends Module implements WidgetInterface
 			}
 		}
 
-		$this->smarty->assign('product', $product);
+		$this->smarty->assign([
+			'product' => $product,
+			'cart' => $data
+		]);
 
 		return $this->display(__FILE__, 'modal.tpl');
 	}
