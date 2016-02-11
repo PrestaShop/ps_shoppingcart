@@ -56,14 +56,19 @@ class BlockCart extends Module implements WidgetInterface
 		}
 	}
 
-	public function getWidgetVariables($hookName, array $params)
+	private function getCartSummaryURL()
 	{
-		$cart_url = $this->context->link->getPageLink(
+		return $this->context->link->getPageLink(
 			'cart',
 			null,
 			$this->context->language->id,
 			['action' => 'show']
 		);
+	}
+
+	public function getWidgetVariables($hookName, array $params)
+	{
+		$cart_url = $this->getCartSummaryURL();
 
 		return [
 			'cart' => (new CartPresenter)->present($params['cart']),
@@ -92,7 +97,7 @@ class BlockCart extends Module implements WidgetInterface
 		$this->smarty->assign([
 			'product' => $product,
 			'cart' => $data,
-            'cart_url' => $this->context->link->getPageLink('cart', true),
+            'cart_url' => $this->getCartSummaryURL()
 		]);
 
 		return $this->display(__FILE__, 'modal.tpl');
