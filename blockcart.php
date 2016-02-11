@@ -91,7 +91,8 @@ class BlockCart extends Module implements WidgetInterface
 
 		$this->smarty->assign([
 			'product' => $product,
-			'cart' => $data
+			'cart' => $data,
+            'cart_url' => $this->context->link->getPageLink('cart', true),
 		]);
 
 		return $this->display(__FILE__, 'modal.tpl');
