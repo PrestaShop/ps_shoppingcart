@@ -47,41 +47,4 @@ $(document).ready(function () {
             }
         });
     });
-
-    $('body').on(
-        'click',
-        '[data-link-action="add-to-cart"], [data-link-action="remove-from-cart"]',
-        function (event) {
-            event.preventDefault();
-
-            // First perform the action using AJAX
-            var actionURL = event.target.href;
-            $.post(actionURL, null, null, 'json').then(function () {
-                // If succesful, refresh cart preview
-                prestashop.emit('cart updated', {
-                    reason: event.target.dataset
-                });
-            });
-        }
-    );
-
-    $('body').on(
-      'click',
-      '[data-button-action="add-to-cart"]',
-      function (event) {
-        event.preventDefault();
-        var $form = $($(event.target).closest('form'));
-        var query = $form.serialize() + '&add=1';
-        var actionURL = $form.attr('action');
-        $.post(actionURL, query, null, 'json').then(function (resp) {
-            prestashop.emit('cart updated', {
-                reason: {
-                    idProduct: resp.id_product,
-                    idProductAttribute: resp.id_product_attribute,
-                    linkAction: 'add-to-cart'
-                }
-            });
-        });
-      }
-    )
 });
