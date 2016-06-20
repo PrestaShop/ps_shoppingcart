@@ -44,8 +44,8 @@ class BlockCart extends Module implements WidgetInterface
 		$this->bootstrap = true;
 		parent::__construct();
 
-		$this->displayName = $this->l('Cart block');
-		$this->description = $this->l('Adds a block containing the customer\'s shopping cart.');
+		$this->displayName = $this->getTranslator()->trans('Cart block', array(), 'Modules.BlockCart.Admin');
+		$this->description = $this->getTranslator()->trans('Adds a block containing the customer\'s shopping cart.', array(), 'Modules.BlockCart.Admin');
 		$this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
 	}
 
@@ -110,16 +110,16 @@ class BlockCart extends Module implements WidgetInterface
 		{
 			$ajax = Tools::getValue('PS_BLOCK_CART_AJAX');
 			if ($ajax != 0 && $ajax != 1)
-				$output .= $this->displayError($this->l('Ajax: Invalid choice.'));
+				$output .= $this->displayError($this->getTranslator()->trans('Ajax: Invalid choice.', array(), 'Modules.BlockCart.Admin'));
 			else
 				Configuration::updateValue('PS_BLOCK_CART_AJAX', (int)($ajax));
 
 			if (($productNbr = (int)Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT') < 0))
-				$output .= $this->displayError($this->l('Please complete the "Products to display" field.'));
+				$output .= $this->displayError($this->getTranslator()->trans('Please complete the "Products to display" field.', array(), 'Modules.BlockCart.Admin'));
 			else
 			{
 				Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', (int)(Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT')));
-				$output .= $this->displayConfirmation($this->l('Settings updated'));
+				$output .= $this->displayConfirmation($this->getTranslator()->trans('Settings updated.', array(), 'Admin.Global'));
 			}
 
 			Configuration::updateValue('PS_BLOCK_CART_SHOW_CROSSSELLING', (int)(Tools::getValue('PS_BLOCK_CART_SHOW_CROSSSELLING')));
@@ -144,58 +144,58 @@ class BlockCart extends Module implements WidgetInterface
 		$fields_form = array(
 			'form' => array(
 				'legend' => array(
-					'title' => $this->l('Settings'),
+					'title' => $this->getTranslator()->trans('Settings', array(), 'Admin.Global'),
 					'icon' => 'icon-cogs'
 				),
 				'input' => array(
 					array(
 						'type' => 'switch',
-						'label' => $this->l('Ajax cart'),
+						'label' => $this->getTranslator()->trans('Ajax cart', array(), 'Modules.BlockCart.Admin'),
 						'name' => 'PS_BLOCK_CART_AJAX',
 						'is_bool' => true,
-						'desc' => $this->l('Activate Ajax mode for the cart (compatible with the default theme).'),
+						'desc' => $this->getTranslator()->trans('Activate Ajax mode for the cart (compatible with the default theme).', array(), 'Modules.BlockCart.Admin'),
 						'values' => array(
 								array(
 									'id' => 'active_on',
 									'value' => 1,
-									'label' => $this->l('Enabled')
+									'label' => $this->getTranslator()->trans('Enabled', array(), 'Admin.Global')
 								),
 								array(
 									'id' => 'active_off',
 									'value' => 0,
-									'label' => $this->l('Disabled')
+									'label' => $this->getTranslator()->trans('Disabled', array(), 'Admin.Global')
 								)
 							),
 						),
 					array(
 						'type' => 'switch',
-						'label' => $this->l('Show cross-selling'),
+						'label' => $this->getTranslator()->trans('Show cross-selling', array(), 'Modules.BlockCart.Admin'),
 						'name' => 'PS_BLOCK_CART_SHOW_CROSSSELLING',
 						'is_bool' => true,
-						'desc' => $this->l('Activate cross-selling display for the cart.'),
+						'desc' => $this->getTranslator()->trans('Activate cross-selling display for the cart.', array(), 'Modules.BlockCart.Admin'),
 						'values' => array(
 								array(
 									'id' => 'active_on',
 									'value' => 1,
-									'label' => $this->l('Enabled')
+									'label' => $this->getTranslator()->trans('Enabled', array(), 'Admin.Global')
 								),
 								array(
 									'id' => 'active_off',
 									'value' => 0,
-									'label' => $this->l('Disabled')
+									'label' => $this->getTranslator()->trans('Disabled', array(), 'Admin.Global')
 								)
 							),
 						),
 					array(
 						'type' => 'text',
-						'label' => $this->l('Products to display in cross-selling'),
+						'label' => $this->getTranslator()->trans('Products to display in cross-selling', array(), 'Modules.BlockCart.Admin'),
 						'name' => 'PS_BLOCK_CART_XSELL_LIMIT',
 						'class' => 'fixed-width-xs',
-						'desc' => $this->l('Define the number of products to be displayed in the cross-selling block.')
+						'desc' => $this->getTranslator()->trans('Define the number of products to be displayed in the cross-selling block.', array(), 'Modules.BlockCart.Admin')
 					),
 				),
 				'submit' => array(
-					'title' => $this->l('Save')
+					'title' => $this->getTranslator()->trans('Save', array(), 'Admin.Actions')
 				)
 			),
 		);
