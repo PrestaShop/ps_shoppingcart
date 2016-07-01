@@ -71,7 +71,7 @@ class BlockCart extends Module implements WidgetInterface
 		$cart_url = $this->getCartSummaryURL();
 
 		return [
-			'cart' => (new CartPresenter)->present($params['cart']),
+			'cart' => (new CartPresenter)->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
 			'refresh_url' => $this->context->link->getModuleLink('blockcart', 'ajax'),
 			'cart_url' => $cart_url
 		];
