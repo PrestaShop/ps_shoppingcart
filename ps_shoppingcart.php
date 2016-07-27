@@ -31,28 +31,28 @@ if (!defined('_PS_VERSION_'))
 
 use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
-class BlockCart extends Module implements WidgetInterface
+class Ps_Shoppingcart extends Module implements WidgetInterface
 {
 	public function __construct()
 	{
-		$this->name = 'blockcart';
+		$this->name = 'ps_shoppingcart';
 		$this->tab = 'front_office_features';
-		$this->version = '2.0.0';
+		$this->version = '1.0.0';
 		$this->author = 'PrestaShop';
 		$this->need_instance = 0;
 
 		$this->bootstrap = true;
 		parent::__construct();
 
-		$this->displayName = $this->getTranslator()->trans('Cart block', array(), 'Modules.BlockCart.Admin');
-		$this->description = $this->getTranslator()->trans('Adds a block containing the customer\'s shopping cart.', array(), 'Modules.BlockCart.Admin');
+		$this->displayName = $this->getTranslator()->trans('Shopping cart', array(), 'Modules.ShoppingCart.Admin');
+		$this->description = $this->getTranslator()->trans('Adds a block containing the customer\'s shopping cart.', array(), 'Modules.ShoppingCart.Admin');
 		$this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
 	}
 
 	public function hookHeader()
 	{
 		if (Configuration::get('PS_BLOCK_CART_AJAX')) {
-			$this->context->controller->addJS($this->_path . 'blockcart.js');
+			$this->context->controller->addJS($this->_path . 'ps_shoppingcart.js');
 		}
 	}
 
@@ -72,7 +72,7 @@ class BlockCart extends Module implements WidgetInterface
 
 		return [
 			'cart' => (new CartPresenter)->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
-			'refresh_url' => $this->context->link->getModuleLink('blockcart', 'ajax'),
+			'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax'),
 			'cart_url' => $cart_url
 		];
 	}
@@ -80,7 +80,7 @@ class BlockCart extends Module implements WidgetInterface
 	public function renderWidget($hookName, array $params)
 	{
 		$this->smarty->assign($this->getWidgetVariables($hookName, $params));
-		return $this->display(__FILE__, 'blockcart.tpl');
+		return $this->display(__FILE__, 'ps_shoppingcart.tpl');
 	}
 
 	public function renderModal(Cart $cart, $id_product, $id_product_attribute)
@@ -110,12 +110,12 @@ class BlockCart extends Module implements WidgetInterface
 		{
 			$ajax = Tools::getValue('PS_BLOCK_CART_AJAX');
 			if ($ajax != 0 && $ajax != 1)
-				$output .= $this->displayError($this->getTranslator()->trans('Ajax: Invalid choice.', array(), 'Modules.BlockCart.Admin'));
+				$output .= $this->displayError($this->getTranslator()->trans('Ajax: Invalid choice.', array(), 'Modules.ShoppingCart.Admin'));
 			else
 				Configuration::updateValue('PS_BLOCK_CART_AJAX', (int)($ajax));
 
 			if (($productNbr = (int)Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT') < 0))
-				$output .= $this->displayError($this->getTranslator()->trans('Please complete the "Products to display" field.', array(), 'Modules.BlockCart.Admin'));
+				$output .= $this->displayError($this->getTranslator()->trans('Please complete the "Products to display" field.', array(), 'Modules.ShoppingCart.Admin'));
 			else
 			{
 				Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', (int)(Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT')));
@@ -150,10 +150,10 @@ class BlockCart extends Module implements WidgetInterface
 				'input' => array(
 					array(
 						'type' => 'switch',
-						'label' => $this->getTranslator()->trans('Ajax cart', array(), 'Modules.BlockCart.Admin'),
+						'label' => $this->getTranslator()->trans('Ajax cart', array(), 'Modules.ShoppingCart.Admin'),
 						'name' => 'PS_BLOCK_CART_AJAX',
 						'is_bool' => true,
-						'desc' => $this->getTranslator()->trans('Activate Ajax mode for the cart (compatible with the default theme).', array(), 'Modules.BlockCart.Admin'),
+						'desc' => $this->getTranslator()->trans('Activate Ajax mode for the cart (compatible with the default theme).', array(), 'Modules.ShoppingCart.Admin'),
 						'values' => array(
 								array(
 									'id' => 'active_on',
@@ -169,10 +169,10 @@ class BlockCart extends Module implements WidgetInterface
 						),
 					array(
 						'type' => 'switch',
-						'label' => $this->getTranslator()->trans('Show cross-selling', array(), 'Modules.BlockCart.Admin'),
+						'label' => $this->getTranslator()->trans('Show cross-selling', array(), 'Modules.ShoppingCart.Admin'),
 						'name' => 'PS_BLOCK_CART_SHOW_CROSSSELLING',
 						'is_bool' => true,
-						'desc' => $this->getTranslator()->trans('Activate cross-selling display for the cart.', array(), 'Modules.BlockCart.Admin'),
+						'desc' => $this->getTranslator()->trans('Activate cross-selling display for the cart.', array(), 'Modules.ShoppingCart.Admin'),
 						'values' => array(
 								array(
 									'id' => 'active_on',
@@ -188,10 +188,10 @@ class BlockCart extends Module implements WidgetInterface
 						),
 					array(
 						'type' => 'text',
-						'label' => $this->getTranslator()->trans('Products to display in cross-selling', array(), 'Modules.BlockCart.Admin'),
+						'label' => $this->getTranslator()->trans('Products to display in cross-selling', array(), 'Modules.ShoppingCart.Admin'),
 						'name' => 'PS_BLOCK_CART_XSELL_LIMIT',
 						'class' => 'fixed-width-xs',
-						'desc' => $this->getTranslator()->trans('Define the number of products to be displayed in the cross-selling block.', array(), 'Modules.BlockCart.Admin')
+						'desc' => $this->getTranslator()->trans('Define the number of products to be displayed in the cross-selling block.', array(), 'Modules.ShoppingCart.Admin')
 					),
 				),
 				'submit' => array(

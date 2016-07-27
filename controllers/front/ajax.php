@@ -24,7 +24,7 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
-class BlockCartAjaxModuleFrontController extends ModuleFrontController
+class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
 {
     public $ssl = true;
     public $display_column_left = false;

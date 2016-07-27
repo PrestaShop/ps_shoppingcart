@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
-	<name>blockcart</name>
-	<displayName><![CDATA[Cart block]]></displayName>
-	<version><![CDATA[1.6.0]]></version>
+	<name>ps_shoppingcart</name>
+	<displayName><![CDATA[Sopping cart]]></displayName>
+	<version><![CDATA[1.0.0]]></version>
 	<description><![CDATA[Adds a block containing the customer&#039;s shopping cart.]]></description>
 	<author><![CDATA[PrestaShop]]></author>
 	<tab><![CDATA[front_office_features]]></tab>

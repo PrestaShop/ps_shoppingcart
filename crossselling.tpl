@@ -23,7 +23,7 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 {if isset($orderProducts) && count($orderProducts) > 0}
-	<h2>{l s='Customers who bought this product also bought:' d='Modules.BlockCart.Shop'}</h2>
+	<h2>{l s='Customers who bought this product also bought:' d='Modules.ShoppingCart.Shop'}</h2>
 	<a id="blockcart_scroll_left" class="blockcart_scroll_left{if count($orderProducts) < 5} hidden{/if}" title="{l s='Previous' d='Shop.Theme'}" rel="nofollow">{l s='Previous' d='Shop.Theme'}</a>
 	<div id="blockcart_list">
 		<ul {if count($orderProducts) > 4}style="width: {math equation="width * nbImages" width=58 nbImages=$orderProducts|@count}px"{/if}>
