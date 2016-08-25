@@ -51,6 +51,10 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
 	public function hookHeader()
 	{
+		if (Configuration::isCatalogMode()) {
+		    return;
+		}
+
 		if (Configuration::get('PS_BLOCK_CART_AJAX')) {
 			$this->context->controller->addJS($this->_path . 'ps_shoppingcart.js');
 		}
@@ -79,6 +83,10 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
 	public function renderWidget($hookName, array $params)
 	{
+		if (Configuration::isCatalogMode()) {
+		    return;
+		}
+
 		$this->smarty->assign($this->getWidgetVariables($hookName, $params));
 		return $this->display(__FILE__, 'ps_shoppingcart.tpl');
 	}
