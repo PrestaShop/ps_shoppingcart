@@ -24,10 +24,17 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
+if (!defined('_PS_VERSION_')) {
+	exit;
+}
+
+if (version_compare(_PS_VERSION_, '1.7.0.0', '<')) {
+	return;
+}
+
 use PrestaShop\PrestaShop\Adapter\Cart\CartPresenter;
 
-if (!defined('_PS_VERSION_'))
-	exit;
+
 
 use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
