@@ -2,7 +2,7 @@
 <module>
 	<name>ps_shoppingcart</name>
 	<displayName><![CDATA[Sopping cart]]></displayName>
-	<version><![CDATA[1.0.1]]></version>
+	<version><![CDATA[1.0.2]]></version>
 	<description><![CDATA[Adds a block containing the customer&#039;s shopping cart.]]></description>
 	<author><![CDATA[PrestaShop]]></author>
 	<tab><![CDATA[front_office_features]]></tab>
