@@ -88,7 +88,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 		}
 
 		$this->smarty->assign($this->getWidgetVariables($hookName, $params));
-		return $this->display(__FILE__, 'ps_shoppingcart.tpl');
+		return $this->fetch('module:ps_shoppingcart/ps_shoppingcart.tpl');
 	}
 
 	public function renderModal(Cart $cart, $id_product, $id_product_attribute)
@@ -108,7 +108,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             'cart_url' => $this->getCartSummaryURL()
 		]);
 
-		return $this->display(__FILE__, 'modal.tpl');
+		return $this->fetch('module:ps_shoppingcart/modal.tpl');
 	}
 
 	public function getContent()
