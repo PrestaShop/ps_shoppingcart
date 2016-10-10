@@ -8,7 +8,7 @@
   <div class="body">
     <ul>
       {foreach from=$cart.products item=product}
-        <li>{include './ps_shoppingcart-product-line.tpl' product=$product}</li>
+        <li>{include 'module:ps_shoppingcart/ps_shoppingcart-product-line.tpl' product=$product}</li>
       {/foreach}
     </ul>
     <div class="cart-subtotals">
