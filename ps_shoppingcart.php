@@ -56,7 +56,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 		}
 
 		if (Configuration::get('PS_BLOCK_CART_AJAX')) {
-			$this->context->controller->addJS($this->_path . 'ps_shoppingcart.js');
+            $this->context->controller->registerJavascript('modules-shoppingcart', 'modules/'.$this->name.'/ps_shoppingcart.js', ['position' => 'bottom', 'priority' => 150]);
 		}
 	}
 
