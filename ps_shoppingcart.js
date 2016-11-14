@@ -45,7 +45,7 @@ $(document).ready(function () {
         }
 
         $.post(refreshURL, requestData).then(function (resp) {
-          $('.blockcart').replaceWith(resp.preview);
+          $('.blockcart').replaceWith($(resp.preview).find('.blockcart'));
           if (resp.modal) {
             showModal(resp.modal);
           }
