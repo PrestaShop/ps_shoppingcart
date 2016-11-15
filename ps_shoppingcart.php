@@ -48,6 +48,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $this->displayName = $this->getTranslator()->trans('Shopping cart', array(), 'Modules.ShoppingCart.Admin');
         $this->description = $this->getTranslator()->trans('Adds a block containing the customer\'s shopping cart.', array(), 'Modules.ShoppingCart.Admin');
         $this->ps_versions_compliancy = array('min' => '1.7.0.0', 'max' => _PS_VERSION_);
+        $this->controllers = array('ajax');
     }
 
     public function hookHeader()
