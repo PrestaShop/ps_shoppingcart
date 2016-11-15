@@ -45,8 +45,8 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $this->bootstrap = true;
         parent::__construct();
 
-        $this->displayName = $this->getTranslator()->trans('Shopping cart', array(), 'Modules.ShoppingCart.Admin');
-        $this->description = $this->getTranslator()->trans('Adds a block containing the customer\'s shopping cart.', array(), 'Modules.ShoppingCart.Admin');
+        $this->displayName = $this->trans('Shopping cart', array(), 'Modules.ShoppingCart.Admin');
+        $this->description = $this->trans('Adds a block containing the customer\'s shopping cart.', array(), 'Modules.ShoppingCart.Admin');
         $this->ps_versions_compliancy = array('min' => '1.7.0.0', 'max' => _PS_VERSION_);
     }
 
@@ -67,7 +67,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             'cart',
             null,
             $this->context->language->id,
-            ['action' => 'show']
+            array(
+                'action' => 'show'
+            )
         );
     }
 
@@ -75,11 +77,11 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     {
         $cart_url = $this->getCartSummaryURL();
 
-        return [
+        return array(
             'cart' => (new CartPresenter)->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
             'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax'),
             'cart_url' => $cart_url
-        ];
+        );
     }
 
     public function renderWidget($hookName, array $params)
@@ -103,11 +105,11 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             }
         }
 
-        $this->smarty->assign([
+        $this->smarty->assign(array(
             'product' => $product,
             'cart' => $data,
-            'cart_url' => $this->getCartSummaryURL()
-        ]);
+            'cart_url' => $this->getCartSummaryURL(),
+        ));
 
         return $this->fetch('module:ps_shoppingcart/modal.tpl');
     }
@@ -118,19 +120,10 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         if (Tools::isSubmit('submitBlockCart')) {
             $ajax = Tools::getValue('PS_BLOCK_CART_AJAX');
             if ($ajax != 0 && $ajax != 1) {
-                $output .= $this->displayError($this->getTranslator()->trans('Ajax: Invalid choice.', array(), 'Modules.ShoppingCart.Admin'));
+                $output .= $this->displayError($this->trans('Ajax: Invalid choice.', array(), 'Modules.ShoppingCart.Admin'));
             } else {
                 Configuration::updateValue('PS_BLOCK_CART_AJAX', (int)($ajax));
             }
-
-            if (($productNbr = (int)Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT') < 0)) {
-                $output .= $this->displayError($this->getTranslator()->trans('Please complete the "Products to display" field.', array(), 'Modules.ShoppingCart.Admin'));
-            } else {
-                Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', (int)(Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT')));
-                $output .= $this->displayConfirmation($this->getTranslator()->trans('Settings updated.', array(), 'Admin.Global'));
-            }
-
-            Configuration::updateValue('PS_BLOCK_CART_SHOW_CROSSSELLING', (int)(Tools::getValue('PS_BLOCK_CART_SHOW_CROSSSELLING')));
         }
         return $output.$this->renderForm();
     }
@@ -142,8 +135,6 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
                 && $this->registerHook('header')
                 && $this->registerHook('displayTop')
                 && Configuration::updateValue('PS_BLOCK_CART_AJAX', 1)
-                && Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', 12)
-                && Configuration::updateValue('PS_BLOCK_CART_SHOW_CROSSSELLING', 1)
         ;
     }
 
@@ -152,59 +143,33 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $fields_form = array(
             'form' => array(
                 'legend' => array(
-                    'title' => $this->getTranslator()->trans('Settings', array(), 'Admin.Global'),
-                    'icon' => 'icon-cogs'
+                    'title' => $this->trans('Settings', array(), 'Admin.Global'),
+                    'icon' => 'icon-cogs',
                 ),
                 'input' => array(
                     array(
                         'type' => 'switch',
-                        'label' => $this->getTranslator()->trans('Ajax cart', array(), 'Modules.ShoppingCart.Admin'),
+                        'label' => $this->trans('Ajax cart', array(), 'Modules.ShoppingCart.Admin'),
                         'name' => 'PS_BLOCK_CART_AJAX',
                         'is_bool' => true,
-                        'desc' => $this->getTranslator()->trans('Activate Ajax mode for the cart (compatible with the default theme).', array(), 'Modules.ShoppingCart.Admin'),
+                        'desc' => $this->trans('Activate Ajax mode for the cart (compatible with the default theme).', array(), 'Modules.ShoppingCart.Admin'),
                         'values' => array(
-                                array(
-                                    'id' => 'active_on',
-                                    'value' => 1,
-                                    'label' => $this->getTranslator()->trans('Enabled', array(), 'Admin.Global')
-                                ),
-                                array(
-                                    'id' => 'active_off',
-                                    'value' => 0,
-                                    'label' => $this->getTranslator()->trans('Disabled', array(), 'Admin.Global')
-                                )
+                            array(
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->trans('Enabled', array(), 'Admin.Global'),
                             ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->trans('Disabled', array(), 'Admin.Global'),
+                            )
                         ),
-                    array(
-                        'type' => 'switch',
-                        'label' => $this->getTranslator()->trans('Show cross-selling', array(), 'Modules.ShoppingCart.Admin'),
-                        'name' => 'PS_BLOCK_CART_SHOW_CROSSSELLING',
-                        'is_bool' => true,
-                        'desc' => $this->getTranslator()->trans('Activate cross-selling display for the cart.', array(), 'Modules.ShoppingCart.Admin'),
-                        'values' => array(
-                                array(
-                                    'id' => 'active_on',
-                                    'value' => 1,
-                                    'label' => $this->getTranslator()->trans('Enabled', array(), 'Admin.Global')
-                                ),
-                                array(
-                                    'id' => 'active_off',
-                                    'value' => 0,
-                                    'label' => $this->getTranslator()->trans('Disabled', array(), 'Admin.Global')
-                                )
-                            ),
-                        ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->getTranslator()->trans('Products to display in cross-selling', array(), 'Modules.ShoppingCart.Admin'),
-                        'name' => 'PS_BLOCK_CART_XSELL_LIMIT',
-                        'class' => 'fixed-width-xs',
-                        'desc' => $this->getTranslator()->trans('Define the number of products to be displayed in the cross-selling block.', array(), 'Modules.ShoppingCart.Admin')
                     ),
                 ),
                 'submit' => array(
-                    'title' => $this->getTranslator()->trans('Save', array(), 'Admin.Actions')
-                )
+                    'title' => $this->trans('Save', array(), 'Admin.Actions'),
+                ),
             ),
         );
 
@@ -234,8 +199,6 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     {
         return array(
             'PS_BLOCK_CART_AJAX' => (bool)Tools::getValue('PS_BLOCK_CART_AJAX', Configuration::get('PS_BLOCK_CART_AJAX')),
-            'PS_BLOCK_CART_SHOW_CROSSSELLING' => (bool)Tools::getValue('PS_BLOCK_CART_SHOW_CROSSSELLING', Configuration::get('PS_BLOCK_CART_SHOW_CROSSSELLING')),
-            'PS_BLOCK_CART_XSELL_LIMIT' => (int)Tools::getValue('PS_BLOCK_CART_XSELL_LIMIT', Configuration::get('PS_BLOCK_CART_XSELL_LIMIT'))
         );
     }
 }
