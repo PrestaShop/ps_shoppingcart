@@ -141,7 +141,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         return
             parent::install()
                 && $this->registerHook('header')
-                && $this->registerHook('displayTop')
+                && $this->registerHook('displayNav2')
                 && Configuration::updateValue('PS_BLOCK_CART_AJAX', 1)
                 && Configuration::updateValue('PS_BLOCK_CART_XSELL_LIMIT', 12)
                 && Configuration::updateValue('PS_BLOCK_CART_SHOW_CROSSSELLING', 1)
