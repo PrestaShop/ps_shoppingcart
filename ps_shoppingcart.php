@@ -70,7 +70,10 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             $this->context->language->id,
             array(
                 'action' => 'show'
-            )
+            ),
+            false,
+            null,
+            true
         );
     }
 
@@ -80,7 +83,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
         return array(
             'cart' => (new CartPresenter)->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
-            'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax'),
+            'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax', array(), null, null, null, true),
             'cart_url' => $cart_url
         );
     }
