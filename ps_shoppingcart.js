@@ -38,6 +38,7 @@ $(document).ready(function () {
 
         if (event && event.reason) {
           requestData = {
+            id_customization: $('#product_customization_id').val(),
             id_product_attribute: event.reason.idProductAttribute,
             id_product: event.reason.idProduct,
             action: event.reason.linkAction
