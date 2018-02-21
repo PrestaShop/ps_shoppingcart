@@ -118,6 +118,15 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         return $this->fetch('module:ps_shoppingcart/modal.tpl');
     }
 
+    public function renderErrorModal($errors)
+    {
+        $this->smarty->assign(array(
+            'errors' => $errors,
+        ));
+
+        return $this->fetch('module:ps_shoppingcart/modal_error.tpl');
+    }
+
     public function getContent()
     {
         $output = '';

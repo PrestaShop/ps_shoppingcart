@@ -36,7 +36,12 @@ $(document).ready(function () {
         var refreshURL = $('.blockcart').data('refresh-url');
         var requestData = {};
 
-        if (event && event.reason) {
+        if (event.resp.hasError) {
+           requestData = {
+            errors: event.resp.errors,
+            action: 'show-error'
+          };
+        } else if (event && event.reason) {
           requestData = {
             id_product_attribute: event.reason.idProductAttribute,
             id_product: event.reason.idProduct,

@@ -41,6 +41,10 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
                 Tools::getValue('id_product'),
                 Tools::getValue('id_product_attribute')
             );
+        } elseif (Tools::getValue('action') === 'show-error') {
+            $modal = $this->module->renderErrorModal(
+                Tools::getValue('errors')
+            );
         }
 
         ob_end_clean();
