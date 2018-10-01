@@ -33,6 +33,8 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
     */
     public function initContent()
     {
+        parent::initContent();
+
         $modal = null;
 
         if (Tools::getValue('action') === 'add-to-cart') {
