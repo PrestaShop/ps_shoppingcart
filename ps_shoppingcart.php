@@ -58,7 +58,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         }
 
         if (Configuration::get('PS_BLOCK_CART_AJAX')) {
-            $this->context->controller->registerJavascript('modules-shoppingcart', 'modules/'.$this->name.'/ps_shoppingcart.js', ['position' => 'bottom', 'priority' => 150]);
+            $this->context->controller->registerJavascript('modules-shoppingcart', 'modules/' . $this->name . '/ps_shoppingcart.js', ['position' => 'bottom', 'priority' => 150]);
         }
     }
 
@@ -129,7 +129,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
                 Configuration::updateValue('PS_BLOCK_CART_AJAX', (int)($ajax));
             }
         }
-        return $output.$this->renderForm();
+        return $output . $this->renderForm();
     }
 
     public function install()
@@ -187,8 +187,8 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'submitBlockCart';
-        $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab
-        .'&module_name='.$this->name;
+        $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false) . '&configure=' . $this->name . '&tab_module=' . $this->tab
+        . '&module_name=' . $this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
         $helper->tpl_vars = array(
             'fields_value' => $this->getConfigFieldsValues(),
