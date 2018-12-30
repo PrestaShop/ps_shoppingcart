@@ -45,10 +45,10 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $this->bootstrap = true;
         parent::__construct();
 
-        $this->displayName = $this->trans('Shopping cart', array(), 'Modules.Shoppingcart.Admin');
-        $this->description = $this->trans('Adds a block containing the customer\'s shopping cart.', array(), 'Modules.Shoppingcart.Admin');
-        $this->ps_versions_compliancy = array('min' => '1.7.1.0', 'max' => _PS_VERSION_);
-        $this->controllers = array('ajax');
+        $this->displayName = $this->trans('Shopping cart', [], 'Modules.Shoppingcart.Admin');
+        $this->description = $this->trans('Adds a block containing the customer\'s shopping cart.', [], 'Modules.Shoppingcart.Admin');
+        $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
+        $this->controllers = ['ajax'];
     }
 
     public function hookHeader()
@@ -68,9 +68,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             'cart',
             null,
             $this->context->language->id,
-            array(
+            [
                 'action' => 'show'
-            ),
+            ],
             false,
             null,
             true
@@ -81,11 +81,11 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     {
         $cart_url = $this->getCartSummaryURL();
 
-        return array(
+        return [
             'cart' => (new CartPresenter)->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
-            'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax', array(), null, null, null, true),
+            'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax', [], null, null, null, true),
             'cart_url' => $cart_url
-        );
+        ];
     }
 
     public function renderWidget($hookName, array $params)
@@ -109,11 +109,11 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             }
         }
 
-        $this->smarty->assign(array(
+        $this->smarty->assign([
             'product' => $product,
             'cart' => $data,
             'cart_url' => $this->getCartSummaryURL(),
-        ));
+        ]);
 
         return $this->fetch('module:ps_shoppingcart/modal.tpl');
     }
@@ -124,7 +124,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         if (Tools::isSubmit('submitBlockCart')) {
             $ajax = Tools::getValue('PS_BLOCK_CART_AJAX');
             if ($ajax != 0 && $ajax != 1) {
-                $output .= $this->displayError($this->trans('Ajax: Invalid choice.', array(), 'Modules.Shoppingcart.Admin'));
+                $output .= $this->displayError($this->trans('Ajax: Invalid choice.', [], 'Modules.Shoppingcart.Admin'));
             } else {
                 Configuration::updateValue('PS_BLOCK_CART_AJAX', (int)($ajax));
             }
@@ -144,38 +144,38 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
     public function renderForm()
     {
-        $fields_form = array(
-            'form' => array(
-                'legend' => array(
-                    'title' => $this->trans('Settings', array(), 'Admin.Global'),
+        $fields_form = [
+            'form' => [
+                'legend' => [
+                    'title' => $this->trans('Settings', [], 'Admin.Global'),
                     'icon' => 'icon-cogs',
-                ),
-                'input' => array(
-                    array(
+                ],
+                'input' => [
+                    [
                         'type' => 'switch',
-                        'label' => $this->trans('Ajax cart', array(), 'Modules.Shoppingcart.Admin'),
+                        'label' => $this->trans('Ajax cart', [], 'Modules.Shoppingcart.Admin'),
                         'name' => 'PS_BLOCK_CART_AJAX',
                         'is_bool' => true,
-                        'desc' => $this->trans('Activate Ajax mode for the cart (compatible with the default theme).', array(), 'Modules.Shoppingcart.Admin'),
-                        'values' => array(
-                            array(
+                        'desc' => $this->trans('Activate Ajax mode for the cart (compatible with the default theme).', [], 'Modules.Shoppingcart.Admin'),
+                        'values' => [
+                            [
                                 'id' => 'active_on',
                                 'value' => 1,
-                                'label' => $this->trans('Enabled', array(), 'Admin.Global'),
-                            ),
-                            array(
+                                'label' => $this->trans('Enabled', [], 'Admin.Global'),
+                            ],
+                            [
                                 'id' => 'active_off',
                                 'value' => 0,
-                                'label' => $this->trans('Disabled', array(), 'Admin.Global'),
-                            )
-                        ),
-                    ),
-                ),
-                'submit' => array(
-                    'title' => $this->trans('Save', array(), 'Admin.Actions'),
-                ),
-            ),
-        );
+                                'label' => $this->trans('Disabled', [], 'Admin.Global'),
+                            ]
+                        ],
+                    ],
+                ],
+                'submit' => [
+                    'title' => $this->trans('Save', [], 'Admin.Actions'),
+                ],
+            ],
+        ];
 
         $helper = new HelperForm();
         $helper->show_toolbar = false;
@@ -183,26 +183,26 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $lang = new Language((int)Configuration::get('PS_LANG_DEFAULT'));
         $helper->default_form_language = $lang->id;
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
-        $this->fields_form = array();
+        $this->fields_form = [];
 
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'submitBlockCart';
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab
         .'&module_name='.$this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
-        $helper->tpl_vars = array(
+        $helper->tpl_vars = [
             'fields_value' => $this->getConfigFieldsValues(),
             'languages' => $this->context->controller->getLanguages(),
             'id_language' => $this->context->language->id
-        );
+        ];
 
-        return $helper->generateForm(array($fields_form));
+        return $helper->generateForm([$fields_form]);
     }
 
     public function getConfigFieldsValues()
     {
-        return array(
+        return [
             'PS_BLOCK_CART_AJAX' => (bool)Tools::getValue('PS_BLOCK_CART_AJAX', Configuration::get('PS_BLOCK_CART_AJAX')),
-        );
+        ];
     }
 }
