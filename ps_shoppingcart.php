@@ -69,7 +69,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             null,
             $this->context->language->id,
             array(
-                'action' => 'show'
+                'action' => 'show',
             ),
             false,
             null,
@@ -84,7 +84,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         return array(
             'cart' => (new CartPresenter)->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
             'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax', array(), null, null, null, true),
-            'cart_url' => $cart_url
+            'cart_url' => $cart_url,
         );
     }
 
@@ -167,7 +167,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
                                 'id' => 'active_off',
                                 'value' => 0,
                                 'label' => $this->trans('Disabled', array(), 'Admin.Global'),
-                            )
+                            ),
                         ),
                     ),
                 ),
@@ -193,7 +193,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $helper->tpl_vars = array(
             'fields_value' => $this->getConfigFieldsValues(),
             'languages' => $this->context->controller->getLanguages(),
-            'id_language' => $this->context->language->id
+            'id_language' => $this->context->language->id,
         );
 
         return $helper->generateForm(array($fields_form));
