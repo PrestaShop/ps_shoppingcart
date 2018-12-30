@@ -49,7 +49,7 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
         header('Content-Type: application/json');
         die(json_encode([
             'preview' => $this->module->renderWidget(null, ['cart' => $this->context->cart]),
-            'modal'   => $modal
+            'modal' => $modal
         ]));
     }
 }
