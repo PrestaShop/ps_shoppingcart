@@ -82,7 +82,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $cart_url = $this->getCartSummaryURL();
 
         return array(
-            'cart' => (new CartPresenter)->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
+            'cart' => (new CartPresenter())->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
             'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax', array(), null, null, null, true),
             'cart_url' => $cart_url,
         );
@@ -101,7 +101,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
     public function renderModal(Cart $cart, $id_product, $id_product_attribute)
     {
-        $data = (new CartPresenter)->present($cart);
+        $data = (new CartPresenter())->present($cart);
         $product = null;
         foreach ($data['products'] as $p) {
             if ($p['id_product'] == $id_product && $p['id_product_attribute'] == $id_product_attribute) {
