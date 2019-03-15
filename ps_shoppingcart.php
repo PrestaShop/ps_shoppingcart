@@ -126,7 +126,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             if ($ajax != 0 && $ajax != 1) {
                 $output .= $this->displayError($this->trans('Ajax: Invalid choice.', array(), 'Modules.Shoppingcart.Admin'));
             } else {
-                Configuration::updateValue('PS_BLOCK_CART_AJAX', (int)($ajax));
+                Configuration::updateValue('PS_BLOCK_CART_AJAX', (int) ($ajax));
             }
         }
         return $output.$this->renderForm();
@@ -179,7 +179,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $helper = new HelperForm();
         $helper->show_toolbar = false;
         $helper->table =  $this->table;
-        $lang = new Language((int)Configuration::get('PS_LANG_DEFAULT'));
+        $lang = new Language((int) Configuration::get('PS_LANG_DEFAULT'));
         $helper->default_form_language = $lang->id;
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
         $this->fields_form = array();
@@ -201,7 +201,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     public function getConfigFieldsValues()
     {
         return array(
-            'PS_BLOCK_CART_AJAX' => (bool)Tools::getValue('PS_BLOCK_CART_AJAX', Configuration::get('PS_BLOCK_CART_AJAX')),
+            'PS_BLOCK_CART_AJAX' => (bool) Tools::getValue('PS_BLOCK_CART_AJAX', Configuration::get('PS_BLOCK_CART_AJAX')),
         );
     }
 }
