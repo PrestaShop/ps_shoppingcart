@@ -29,8 +29,8 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
     public $ssl = true;
 
     /**
-    * @see FrontController::initContent()
-    */
+     * @see FrontController::initContent()
+     */
     public function initContent()
     {
         parent::initContent();
