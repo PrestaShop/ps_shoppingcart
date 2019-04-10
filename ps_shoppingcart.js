@@ -36,22 +36,22 @@ $(document).ready(function () {
         var refreshURL = $('.blockcart').data('refresh-url');
         var requestData = {};
 
-        if (event && event.reason) {
+        if (event && event.reason && !event.resp.hasError) {
           requestData = {
             id_product_attribute: event.reason.idProductAttribute,
             id_product: event.reason.idProduct,
             action: event.reason.linkAction
           };
-        }
 
-        $.post(refreshURL, requestData).then(function (resp) {
-          $('.blockcart').replaceWith($(resp.preview).find('.blockcart'));
-          if (resp.modal) {
-            showModal(resp.modal);
-          }
-        }).fail(function (resp) {
-          prestashop.emit('handleError', {eventType: 'updateShoppingCart', resp: resp});
-        });
+          $.post(refreshURL, requestData).then(function (resp) {
+            $('.blockcart').replaceWith($(resp.preview).find('.blockcart'));
+            if (resp.modal) {
+              showModal(resp.modal);
+            }
+          }).fail(function (resp) {
+            prestashop.emit('handleError', { eventType: 'updateShoppingCart', resp: resp });
+          });
+        }
       }
     );
   });
