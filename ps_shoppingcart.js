@@ -35,7 +35,6 @@ $(document).ready(function () {
       function (event) {
         var refreshURL = $('.blockcart').data('refresh-url');
         var requestData = {};
-
         if (event && event.reason && !event.resp.hasError) {
           requestData = {
             id_product_attribute: event.reason.idProductAttribute,
@@ -51,6 +50,9 @@ $(document).ready(function () {
           }).fail(function (resp) {
             prestashop.emit('handleError', { eventType: 'updateShoppingCart', resp: resp });
           });
+        }
+        if (event && event.resp && event.resp.hasError) {
+          $('#product-availability').html('<i class="material-icons product-unavailable">&#xE14B;</i>' + event.resp.errors.join('<br/>'));
         }
       }
     );
