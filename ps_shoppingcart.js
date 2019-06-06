@@ -52,7 +52,7 @@ $(document).ready(function () {
           });
         }
         if (event && event.resp && event.resp.hasError) {
-          $('#product-availability').html('<i class="material-icons product-unavailable">&#xE14B;</i>' + event.resp.errors.join('<br/>'));
+          prestashop.emit('showErrorNextToAddtoCartButton', { errorMessage: event.resp.errors.join('<br/>')});
         }
       }
     );
