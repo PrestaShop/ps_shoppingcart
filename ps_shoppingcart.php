@@ -99,12 +99,14 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         return $this->fetch('module:ps_shoppingcart/ps_shoppingcart.tpl');
     }
 
-    public function renderModal(Cart $cart, $id_product, $id_product_attribute)
+    public function renderModal(Cart $cart, $id_product, $id_product_attribute, $id_customization)
     {
         $data = (new CartPresenter())->present($cart);
         $product = null;
         foreach ($data['products'] as $p) {
-            if ($p['id_product'] == $id_product && $p['id_product_attribute'] == $id_product_attribute) {
+            if ((int)$p['id_product'] == $id_product &&
+                (int)$p['id_product_attribute'] == $id_product_attribute &&
+                (int)$p['id_customization'] == $id_customization) {
                 $product = $p;
                 break;
             }

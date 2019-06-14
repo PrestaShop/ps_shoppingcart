@@ -40,8 +40,9 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
         if (Tools::getValue('action') === 'add-to-cart') {
             $modal = $this->module->renderModal(
                 $this->context->cart,
-                Tools::getValue('id_product'),
-                Tools::getValue('id_product_attribute')
+                (int)Tools::getValue('id_product'),
+                (int)Tools::getValue('id_product_attribute'),
+                (int)Tools::getValue('id_customization')
             );
         }
 
