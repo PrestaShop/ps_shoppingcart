@@ -12,6 +12,15 @@
   "require": {
     "php": ">=5.4"
   },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.14",
+    "prestashop/php-coding-standards": "dev-master"
+  },
+  "scripts": {
+    "lint": [
+      "php-cs-fixer fix --no-interaction --dry-run --diff"
+    ]
+  },
   "config": {
     "preferred-install": "dist"
   },
