@@ -1,0 +1,8 @@
+parameters:
+  reportUnmatchedIgnoredErrors: false
+  bootstrap: /var/www/html/modules/ps_shoppingcart/tests/php/phpstan/bootstrap.php
+  paths:
+    - /var/www/html/modules/ps_shoppingcart/src
+  ignoreErrors:
+
+  level: 5
