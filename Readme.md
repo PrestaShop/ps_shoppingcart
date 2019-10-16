@@ -4,6 +4,10 @@
 
 Adds a block containing the customer\'s shopping cart.
 
+## Reporting issues
+
+You can report issues with this module in the main PrestaShop repository. [Click here to report an issue][report-issue]. 
+
 ## Contributing
 
 PrestaShop modules are open-source extensions to the PrestaShop e-commerce solution. Everyone is welcome and even encouraged to contribute with their own improvements.
@@ -31,6 +35,12 @@ Contributors wishing to edit a module's files should follow the following proces
 
 That's it: you have contributed to this open-source project! Congratulations!
 
-[1]: http://doc.prestashop.com/display/PS16/Coding+Standards
-[2]: http://doc.prestashop.com/display/PS16/How+to+write+a+commit+message
+## License
+
+This module is released under the [Academic Free License 3.0][AFL-3.0] 
+
+[report-issue]: https://github.com/PrestaShop/PrestaShop/issues/new/choose
+[1]: https://devdocs.prestashop.com/1.7/development/coding-standards/
+[2]: https://devdocs.prestashop.com/1.7/contribute/contribution-guidelines/
 [3]: https://help.github.com/articles/using-pull-requests
+[AFL-3.0]: https://opensource.org/licenses/AFL-3.0
