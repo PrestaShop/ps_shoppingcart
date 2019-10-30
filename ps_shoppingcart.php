@@ -38,7 +38,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     {
         $this->name = 'ps_shoppingcart';
         $this->tab = 'front_office_features';
-        $this->version = '2.0.2';
+        $this->version = '2.0.3';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
 
@@ -58,7 +58,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         }
 
         if (Configuration::get('PS_BLOCK_CART_AJAX')) {
-            $this->context->controller->registerJavascript('modules-shoppingcart', 'modules/'.$this->name.'/ps_shoppingcart.js', ['position' => 'bottom', 'priority' => 150]);
+            $this->context->controller->registerJavascript('modules-shoppingcart', 'modules/' . $this->name . '/ps_shoppingcart.js', ['position' => 'bottom', 'priority' => 150]);
         }
     }
 
@@ -69,7 +69,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             null,
             $this->context->language->id,
             array(
-                'action' => 'show'
+                'action' => 'show',
             ),
             false,
             null,
@@ -82,9 +82,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $cart_url = $this->getCartSummaryURL();
 
         return array(
-            'cart' => (new CartPresenter)->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
+            'cart' => (new CartPresenter())->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
             'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax', array(), null, null, null, true),
-            'cart_url' => $cart_url
+            'cart_url' => $cart_url,
         );
     }
 
@@ -95,15 +95,18 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         }
 
         $this->smarty->assign($this->getWidgetVariables($hookName, $params));
+
         return $this->fetch('module:ps_shoppingcart/ps_shoppingcart.tpl');
     }
 
-    public function renderModal(Cart $cart, $id_product, $id_product_attribute)
+    public function renderModal(Cart $cart, $id_product, $id_product_attribute, $id_customization)
     {
-        $data = (new CartPresenter)->present($cart);
+        $data = (new CartPresenter())->present($cart);
         $product = null;
         foreach ($data['products'] as $p) {
-            if ($p['id_product'] == $id_product && $p['id_product_attribute'] == $id_product_attribute) {
+            if ((int) $p['id_product'] == $id_product &&
+                (int) $p['id_product_attribute'] == $id_product_attribute &&
+                (int) $p['id_customization'] == $id_customization) {
                 $product = $p;
                 break;
             }
@@ -126,10 +129,11 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             if ($ajax != 0 && $ajax != 1) {
                 $output .= $this->displayError($this->trans('Ajax: Invalid choice.', array(), 'Modules.Shoppingcart.Admin'));
             } else {
-                Configuration::updateValue('PS_BLOCK_CART_AJAX', (int)($ajax));
+                Configuration::updateValue('PS_BLOCK_CART_AJAX', (int) ($ajax));
             }
         }
-        return $output.$this->renderForm();
+
+        return $output . $this->renderForm();
     }
 
     public function install()
@@ -138,8 +142,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
             parent::install()
                 && $this->registerHook('header')
                 && $this->registerHook('displayTop')
-                && Configuration::updateValue('PS_BLOCK_CART_AJAX', 1)
-        ;
+                && Configuration::updateValue('PS_BLOCK_CART_AJAX', 1);
     }
 
     public function renderForm()
@@ -167,7 +170,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
                                 'id' => 'active_off',
                                 'value' => 0,
                                 'label' => $this->trans('Disabled', array(), 'Admin.Global'),
-                            )
+                            ),
                         ),
                     ),
                 ),
@@ -179,21 +182,21 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
         $helper = new HelperForm();
         $helper->show_toolbar = false;
-        $helper->table =  $this->table;
-        $lang = new Language((int)Configuration::get('PS_LANG_DEFAULT'));
+        $helper->table = $this->table;
+        $lang = new Language((int) Configuration::get('PS_LANG_DEFAULT'));
         $helper->default_form_language = $lang->id;
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
         $this->fields_form = array();
 
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'submitBlockCart';
-        $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false).'&configure='.$this->name.'&tab_module='.$this->tab
-        .'&module_name='.$this->name;
+        $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false) . '&configure=' . $this->name . '&tab_module=' . $this->tab
+        . '&module_name=' . $this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
         $helper->tpl_vars = array(
             'fields_value' => $this->getConfigFieldsValues(),
             'languages' => $this->context->controller->getLanguages(),
-            'id_language' => $this->context->language->id
+            'id_language' => $this->context->language->id,
         );
 
         return $helper->generateForm(array($fields_form));
@@ -202,7 +205,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     public function getConfigFieldsValues()
     {
         return array(
-            'PS_BLOCK_CART_AJAX' => (bool)Tools::getValue('PS_BLOCK_CART_AJAX', Configuration::get('PS_BLOCK_CART_AJAX')),
+            'PS_BLOCK_CART_AJAX' => (bool) Tools::getValue('PS_BLOCK_CART_AJAX', Configuration::get('PS_BLOCK_CART_AJAX')),
         );
     }
 }

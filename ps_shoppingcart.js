@@ -29,20 +29,18 @@ $(document).ready(function () {
     });
   };
 
-  $(document).ready(function () {
-    prestashop.on(
-      'updateCart',
-      function (event) {
-        var refreshURL = $('.blockcart').data('refresh-url');
-        var requestData = {};
-
-        if (event && event.reason) {
-          requestData = {
-            id_product_attribute: event.reason.idProductAttribute,
-            id_product: event.reason.idProduct,
-            action: event.reason.linkAction
-          };
-        }
+  prestashop.on(
+    'updateCart',
+    function (event) {
+      var refreshURL = $('.blockcart').data('refresh-url');
+      var requestData = {};
+      if (event && event.reason && typeof event.resp !== 'undefined' && !event.resp.hasError) {
+        requestData = {
+          id_customization: event.reason.idCustomization,
+          id_product_attribute: event.reason.idProductAttribute,
+          id_product: event.reason.idProduct,
+          action: event.reason.linkAction
+        };
 
         $.post(refreshURL, requestData).then(function (resp) {
           $('.blockcart').replaceWith($(resp.preview).find('.blockcart'));
@@ -50,9 +48,12 @@ $(document).ready(function () {
             showModal(resp.modal);
           }
         }).fail(function (resp) {
-          prestashop.emit('handleError', {eventType: 'updateShoppingCart', resp: resp});
+          prestashop.emit('handleError', { eventType: 'updateShoppingCart', resp: resp });
         });
       }
-    );
-  });
+      if (event && event.resp && event.resp.hasError) {
+        prestashop.emit('showErrorNextToAddtoCartButton', { errorMessage: event.resp.errors.join('<br/>')});
+      }
+    }
+  );
 });

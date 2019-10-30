@@ -29,8 +29,8 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
     public $ssl = true;
 
     /**
-    * @see FrontController::initContent()
-    */
+     * @see FrontController::initContent()
+     */
     public function initContent()
     {
         parent::initContent();
@@ -40,8 +40,9 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
         if (Tools::getValue('action') === 'add-to-cart') {
             $modal = $this->module->renderModal(
                 $this->context->cart,
-                Tools::getValue('id_product'),
-                Tools::getValue('id_product_attribute')
+                (int) Tools::getValue('id_product'),
+                (int) Tools::getValue('id_product_attribute'),
+                (int) Tools::getValue('id_customization')
             );
         }
 
@@ -49,7 +50,7 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
         header('Content-Type: application/json');
         die(json_encode([
             'preview' => $this->module->renderWidget(null, ['cart' => $this->context->cart]),
-            'modal'   => $modal
+            'modal' => $modal,
         ]));
     }
 }
