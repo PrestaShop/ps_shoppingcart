@@ -34,7 +34,7 @@ $(document).ready(function () {
     function (event) {
       var refreshURL = $('.blockcart').data('refresh-url');
       var requestData = {};
-      if (event && event.reason && typeof event.resp !== 'undefined' && !event.resp.hasError) {
+      if (event && event.reason && !('resp' in event)) {
         requestData = {
           id_customization: event.reason.idCustomization,
           id_product_attribute: event.reason.idProductAttribute,
