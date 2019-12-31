@@ -2,7 +2,7 @@
   "name": "prestashop/ps_shoppingcart",
   "description": "PrestaShop module ps_shoppingcart",
   "homepage": "https://github.com/PrestaShop/ps_shoppingcart",
-  "license": "AFL - Academic Free License (AFL 3.0)",
+  "license": "AFL-3.0",
   "authors": [
     {
       "name": "PrestaShop SA",
