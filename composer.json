@@ -13,8 +13,7 @@
     "php": ">=5.4"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^2.14",
-    "prestashop/php-coding-standards": "dev-master"
+    "prestashop/php-dev-tools": "^3.4"
   },
   "scripts": {
     "lint": [
@@ -24,5 +23,6 @@
   "config": {
     "preferred-install": "dist"
   },
-  "type": "prestashop-module"
+  "type": "prestashop-module",
+  "author": "PrestaShop"
 }
