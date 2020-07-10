@@ -58,20 +58,19 @@ $(document).ready(function () {
           id_product: event.reason.idProduct,
           action: event.reason.linkAction
         };
-
-        $.post(refreshURL, requestData).then(function (resp) {
-          var html = $('<div />').append($.parseHTML(resp.preview));
-          $('.blockcart').replaceWith(html.find('.blockcart'));
-          if (resp.modal) {
-            showModal(resp.modal);
-          }
-        }).fail(function (resp) {
-          prestashop.emit('handleError', { eventType: 'updateShoppingCart', resp: resp });
-        });
       }
       if (event && event.resp && event.resp.hasError) {
         prestashop.emit('showErrorNextToAddtoCartButton', { errorMessage: event.resp.errors.join('<br/>')});
       }
+      $.post(refreshURL, requestData).then(function (resp) {
+        var html = $('<div />').append($.parseHTML(resp.preview));
+        $('.blockcart').replaceWith($(resp.preview).find('.blockcart'));
+        if (resp.modal) {
+          showModal(resp.modal);
+        }
+      }).fail(function (resp) {
+        prestashop.emit('handleError', { eventType: 'updateShoppingCart', resp: resp });
+      });
     }
   );
 });
