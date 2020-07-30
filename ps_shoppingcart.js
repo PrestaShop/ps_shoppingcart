@@ -18,18 +18,18 @@
  */
 
 /**
- * This module exposes an extension point in the form of the `showModal` function.
+ * This module exposes an extension point through `showModal` function.
  *
- * If you want to override the way the modal window is displayed, simply define:
+ * If you want to customize the way the modal window is displayed, you need to do:
  *
  * prestashop.blockcart = prestashop.blockcart || {};
  * prestashop.blockcart.showModal = function myOwnShowModal (modalHTML) {
  *   // your own code
- *   // please not that it is your responsibility to handle closing the modal too
+ *   // please not that it is your responsibility to handle the modal "close" behavior
  * };
  *
- * Attention: your "override" JS needs to be included **before** this file.
- * The safest way to do so is to place your "override" inside the theme's main JS file.
+ * Warning: your custom JavaScript needs to be included **before** this file.
+ * The safest way to do so is to place your "override" inside the theme main JavaScript file.
  *
  */
 
