@@ -50,6 +50,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $this->controllers = array('ajax');
     }
 
+    /**
+     * @return void
+     */
     public function hookHeader()
     {
         if (Configuration::isCatalogMode()) {
@@ -61,6 +64,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         }
     }
 
+    /**
+     * @return string
+     */
     private function getCartSummaryURL()
     {
         return $this->context->link->getPageLink(
@@ -76,6 +82,11 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         );
     }
 
+    /**
+     * @param string|null $hookName
+     * @param array<string,mixed> $params
+     * @return array<string,mixed>
+     */
     public function getWidgetVariables($hookName, array $params)
     {
         $cart_url = $this->getCartSummaryURL();
@@ -87,10 +98,15 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         );
     }
 
+    /**
+     * @param string|null $hookName
+     * @param array<string,mixed> $params
+     * @return string
+     */
     public function renderWidget($hookName, array $params)
     {
         if (Configuration::isCatalogMode()) {
-            return;
+            return '';
         }
 
         $this->smarty->assign($this->getWidgetVariables($hookName, $params));
@@ -98,6 +114,14 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         return $this->fetch('module:ps_shoppingcart/ps_shoppingcart.tpl');
     }
 
+    /**
+     * @param Cart $cart
+     * @param int $id_product
+     * @param int $id_product_attribute
+     * @param int $id_customization
+     * @return string
+     * @throws Exception
+     */
     public function renderModal(Cart $cart, $id_product, $id_product_attribute, $id_customization)
     {
         $data = (new CartPresenter())->present($cart);
@@ -120,6 +144,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         return $this->fetch('module:ps_shoppingcart/modal.tpl');
     }
 
+    /**
+     * @return string
+     */
     public function getContent()
     {
         $output = '';
@@ -135,6 +162,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         return $output . $this->renderForm();
     }
 
+    /**
+     * @return bool
+     */
     public function install()
     {
         $this->uninstallPrestaShop16Module();
@@ -148,6 +178,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
     /**
      * Migrate data from 1.6 equivalent module (if applicable), then uninstall
+     * @return bool
      */
     public function uninstallPrestaShop16Module()
     {
@@ -167,6 +198,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         return true;
     }
 
+    /**
+     * @return string
+     */
     public function renderForm()
     {
         $fields_form = array(
@@ -208,7 +242,6 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         $lang = new Language((int) Configuration::get('PS_LANG_DEFAULT'));
         $helper->default_form_language = $lang->id;
         $helper->allow_employee_form_lang = Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') ? Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG') : 0;
-        $this->fields_form = array();
 
         $helper->identifier = $this->identifier;
         $helper->submit_action = 'submitBlockCart';
@@ -224,6 +257,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         return $helper->generateForm(array($fields_form));
     }
 
+    /**
+     * @return bool[]
+     */
     public function getConfigFieldsValues()
     {
         return array(

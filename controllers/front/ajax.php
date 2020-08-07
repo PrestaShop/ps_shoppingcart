@@ -20,10 +20,14 @@
 
 class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
 {
+    /**
+     * @var bool
+     */
     public $ssl = true;
 
     /**
      * @see FrontController::initContent()
+     * @return void
      */
     public function initContent()
     {
