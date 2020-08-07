@@ -17,7 +17,6 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  * International Registered Trademark & Property of PrestaShop SA
  */
-
 class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
 {
     /**
@@ -27,6 +26,7 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
 
     /**
      * @see FrontController::initContent()
+     *
      * @return void
      */
     public function initContent()
