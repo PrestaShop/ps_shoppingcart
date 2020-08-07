@@ -14,7 +14,8 @@
   },
   "require-dev": {
     "prestashop/php-dev-tools": "^3.4",
-    "phpstan/phpstan": "^0.12.32"
+    "phpstan/phpstan": "^0.12.32",
+    "friendsofphp/php-cs-fixer": "^2.16.1"
   },
   "scripts": {
     "lint": [
