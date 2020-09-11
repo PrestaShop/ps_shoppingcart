@@ -13,19 +13,19 @@
     "php": ">=5.4"
   },
   "require-dev": {
-    "prestashop/php-dev-tools": "^3.4",
-    "phpstan/phpstan": "^0.12.32",
-    "friendsofphp/php-cs-fixer": "^2.16.1"
-  },
-  "scripts": {
-    "lint": [
-      "php-cs-fixer fix --no-interaction --dry-run --diff"
-    ]
+    "prestashop/php-dev-tools": "~3.0"
   },
   "config": {
     "preferred-install": "dist",
+    "classmap-authoritative": true,
+    "optimize-autoloader": true,
     "prepend-autoloader": false
   },
-  "type": "prestashop-module",
-  "author": "PrestaShop"
+  "autoload": {
+    "classmap": [
+      "ps_shoppingcart.php",
+      "controllers/"
+    ]
+  },
+  "type": "prestashop-module"
 }
