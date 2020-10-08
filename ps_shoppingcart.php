@@ -226,7 +226,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
                             [
                                 'id' => 'active_on',
                                 'value' => 1,
-                                'label' => $this->trans('YES', [], 'Admin.Global'),
+                                'label' => $this->trans('Yes', [], 'Admin.Global'),
                             ],
                             [
                                 'id' => 'active_off',
