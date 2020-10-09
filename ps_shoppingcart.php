@@ -160,6 +160,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
                 $output .= $this->displayError($this->trans('Ajax: Invalid choice.', [], 'Modules.Shoppingcart.Admin'));
             } else {
                 Configuration::updateValue('PS_BLOCK_CART_AJAX', (int) ($ajax));
+                Tools::redirectAdmin($this->context->link->getAdminLink('AdminModules') . '&configure=' . $this->name . '&conf=6');
             }
         }
 
