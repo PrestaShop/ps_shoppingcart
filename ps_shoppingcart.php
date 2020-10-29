@@ -45,7 +45,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
         parent::__construct();
 
         $this->displayName = $this->trans('Shopping cart', [], 'Modules.Shoppingcart.Admin');
-        $this->description = $this->trans('Adds a block containing the customer\'s shopping cart.', [], 'Modules.Shoppingcart.Admin');
+        $this->description = $this->trans('Display a shopping cart icon on your pages and the number of items it contains.', [], 'Modules.Shoppingcart.Admin');
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
         $this->controllers = ['ajax'];
     }
