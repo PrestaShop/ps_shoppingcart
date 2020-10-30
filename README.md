@@ -2,7 +2,7 @@
 
 ## About
 
-Adds a block containing the customer's shopping cart.
+Display a shopping cart icon on your pages and the number of items it contains.
 
 ## Multistore compatibility
 
