@@ -46,7 +46,7 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
 
         ob_end_clean();
         header('Content-Type: application/json');
-        die(json_encode([
+        exit(json_encode([
             'preview' => $this->module instanceof Ps_Shoppingcart ? $this->module->renderWidget(null, ['cart' => $this->context->cart]) : '',
             'modal' => $modal,
         ]));

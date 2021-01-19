@@ -37,6 +37,11 @@ jobs:
             matrix:
                 presta-versions: ['1.7.1.0', 'latest']
         steps:
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                    php-version: '7.4'
+
             - name: Checkout
               uses: actions/checkout@v2.0.0
 
