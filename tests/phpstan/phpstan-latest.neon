@@ -1,0 +1,8 @@
+includes:
+	- %currentWorkingDirectory%/tests/phpstan/phpstan.neon
+
+parameters:
+  ignoreErrors:
+    - '#Access to an undefined property Ps_Shoppingcart::\$bootstrap.#'
+    - '#If condition is always true.#'
+    - '#Property ModuleCore::\$version \(float\) does not accept string.#'

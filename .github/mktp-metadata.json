@@ -1,0 +1,10 @@
+{
+  "id_product": "23870",
+  "technical_name": "ps_shoppincart",
+  "display_name": "Shopping cart Module ",
+  "channel": "stable",
+  "type_upgrade": "updatemin",
+  "product_type": "module",
+  "compatible_from": "1.7.1.0",
+  "rgpd_status": "1"
+}

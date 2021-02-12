@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
 	<name>ps_shoppingcart</name>
-	<displayName><![CDATA[Sopping cart]]></displayName>
+	<displayName><![CDATA[Shopping cart]]></displayName>
 	<version><![CDATA[2.0.4]]></version>
 	<description><![CDATA[Adds a block containing the customer&#039;s shopping cart.]]></description>
 	<author><![CDATA[PrestaShop]]></author>
