@@ -53,7 +53,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     /**
      * @return void
      */
-    public function hookHeader()
+    public function hookDisplayHeader()
     {
         if (Configuration::isCatalogMode()) {
             return;
@@ -176,7 +176,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
         return
             parent::install()
-                && $this->registerHook('header')
+                && $this->registerHook('displayHeader')
                 && $this->registerHook('displayNav2')
                 && Configuration::updateValue('PS_BLOCK_CART_AJAX', 1);
     }
