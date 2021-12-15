@@ -37,7 +37,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     {
         $this->name = 'ps_shoppingcart';
         $this->tab = 'front_office_features';
-        $this->version = '2.0.4';
+        $this->version = '2.0.5';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
 
@@ -53,7 +53,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     /**
      * @return void
      */
-    public function hookHeader()
+    public function hookDisplayHeader()
     {
         if (Configuration::isCatalogMode()) {
             return;
@@ -176,7 +176,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
         return
             parent::install()
-                && $this->registerHook('header')
+                && $this->registerHook('displayHeader')
                 && $this->registerHook('displayNav2')
                 && Configuration::updateValue('PS_BLOCK_CART_AJAX', 1);
     }
