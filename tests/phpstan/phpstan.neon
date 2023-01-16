@@ -6,11 +6,6 @@ parameters:
     # From PHPStan 0.12, paths to check are relative to the neon file
     - ../../ps_shoppingcart.php
     - ../../controllers/
-  ignoreErrors:
-    - '#Access to an undefined property Ps_Shoppingcart::\$bootstrap.#'
-    - '#If condition is always true.#'
-    - '#Property ModuleCore::\$version \(float\) does not accept string.#'
-    ## On 1.7.1.0
-    - '#Call to method assign\(\) on an unknown class Smarty_Data#'
-  reportUnmatchedIgnoredErrors: false
+    - ../../translations/
+    - ../../upgrade/
   level: 5
