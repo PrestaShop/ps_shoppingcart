@@ -19,6 +19,12 @@ It can be activated on one store and deactivated on another
 
 Link to specs : https://docs.prestashop-project.org/functional-documentation/functional-documentation/ux-ui/back-office/improve/modules/shopping-cart-ps_shoppingcart
 
+you can have all the scenarios related to this module :
+
+Link to scenarios : https://build.prestashop-project.org/test-scenarios/scenarios/modules/ps-shoppingcart.html
+
+
+
 Enable/disable Ajax cart option. Check on FO that when disabled, the page needs to be refreshed in order to see the product in cart.
 
 ## Reporting issues
