@@ -15,7 +15,7 @@ It can be configured differently from one store to another.<br/>
 It can be configured quickly in the same way on all stores thanks to the all shops context or the group of shops.<br/>
 It can be activated on one store and deactivated on another
 
-## How to test
+## How to test 
 
 Link to specs : https://docs.prestashop-project.org/functional-documentation/functional-documentation/ux-ui/back-office/improve/modules/shopping-cart-ps_shoppingcart
 
