@@ -9,6 +9,6 @@ parameters:
     - ../../translations/
     - ../../upgrade/
   ignoreErrors:
-    - '#Call to an undefined method Module::renderModal().#'
-    - '#Call to an undefined method Module::renderWidget().#'
+    - '#Call to an undefined method Module::renderModal\(\).#'
+    - '#Call to an undefined method Module::renderWidget\(\).#'
   level: 5
