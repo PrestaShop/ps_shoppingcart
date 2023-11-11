@@ -18,7 +18,7 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-use PrestaShop\PrestaShop\Adapter\Cart\CartPresenter;
+use PrestaShop\PrestaShop\Adapter\Presenter\Cart\CartPresenter;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -37,7 +37,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     {
         $this->name = 'ps_shoppingcart';
         $this->tab = 'front_office_features';
-        $this->version = '2.0.7';
+        $this->version = '3.0.0';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
 
@@ -46,7 +46,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
 
         $this->displayName = $this->trans('Shopping cart', [], 'Modules.Shoppingcart.Admin');
         $this->description = $this->trans('Display a shopping cart icon on your pages and the number of items it contains.', [], 'Modules.Shoppingcart.Admin');
-        $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
+        $this->ps_versions_compliancy = ['min' => '1.7.5.0', 'max' => _PS_VERSION_];
         $this->controllers = ['ajax'];
     }
 
@@ -90,13 +90,32 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
      */
     public function getWidgetVariables($hookName, array $params)
     {
-        $cart_url = $this->getCartSummaryURL();
-
         return [
-            'cart' => (new CartPresenter())->present(isset($params['cart']) ? $params['cart'] : $this->context->cart),
+            'cart' => $this->getPresentedCart(),
             'refresh_url' => $this->context->link->getModuleLink('ps_shoppingcart', 'ajax', [], null, null, null, true),
-            'cart_url' => $cart_url,
+            'cart_url' => $this->getCartSummaryURL(),
         ];
+    }
+
+    /**
+     * Provides an already presented object from the context if set.
+     * If not, runs the presenter.
+     *
+     * @return array presented cart
+     */
+    private function getPresentedCart() {
+        /*
+         * We will use the already presented cart in the first place. It should be already in the template.
+         * Check FrontController::assignGeneralPurposeVariables for more information.
+         *
+         * If it's not, we will present the cart ourselves. There will always be a cart object
+         * assigned in FrontController::init.
+         */
+        if (!empty($this->context->smarty->getTemplateVars('cart'))) {
+            return $this->context->smarty->getTemplateVars('cart');
+        } else {
+            return (new CartPresenter())->present($this->context->cart);
+        }
     }
 
     /**
@@ -126,9 +145,9 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
      *
      * @throws Exception
      */
-    public function renderModal(Cart $cart, $id_product, $id_product_attribute, $id_customization)
+    public function renderModal($id_product, $id_product_attribute, $id_customization)
     {
-        $data = (new CartPresenter())->present($cart);
+        $data = $this->getPresentedCart();
         $product = null;
         foreach ($data['products'] as $p) {
             if ((int) $p['id_product'] == $id_product &&
