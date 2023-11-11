@@ -103,7 +103,8 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
      *
      * @return array presented cart
      */
-    private function getPresentedCart() {
+    private function getPresentedCart()
+    {
         /*
          * We will use the already presented cart in the first place. It should be already in the template.
          * Check FrontController::assignGeneralPurposeVariables for more information.
