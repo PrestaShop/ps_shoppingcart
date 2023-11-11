@@ -137,7 +137,6 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     }
 
     /**
-     * @param Cart $cart
      * @param int $id_product
      * @param int $id_product_attribute
      * @param int $id_customization
