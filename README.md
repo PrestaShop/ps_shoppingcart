@@ -4,12 +4,28 @@
 
 Display a shopping cart icon on your pages and the number of items it contains.
 
+## Compatibility
+
+PrestaShop: `1.7.5.0` or later
+
 ## Multistore compatibility
 
 This module is compatible with the multistore :heavy_check_mark: <br/>
 It can be configured differently from one store to another.<br/>
 It can be configured quickly in the same way on all stores thanks to the all shops context or the group of shops.<br/>
 It can be activated on one store and deactivated on another
+
+## How to test
+
+Link to specs : https://docs.prestashop-project.org/functional-documentation/functional-documentation/ux-ui/back-office/improve/modules/shopping-cart-ps_shoppingcart
+
+you can have all the scenarios related to this module :
+
+Link to scenarios : https://build.prestashop-project.org/test-scenarios/scenarios/modules/ps-shoppingcart.html
+
+
+
+Enable/disable Ajax cart option. Check on FO that when disabled, the page needs to be refreshed in order to see the product in cart.
 
 ## Reporting issues
 
