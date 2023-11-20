@@ -6,7 +6,7 @@ Display a shopping cart icon on your pages and the number of items it contains.
 
 ## Compatibility
 
-PrestaShop: `1.7.1.0` or later
+PrestaShop: `1.7.5.0` or later
 
 ## Multistore compatibility
 

@@ -35,9 +35,8 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
 
         $modal = null;
 
-        if ($this->module instanceof Ps_Shoppingcart && Tools::getValue('action') === 'add-to-cart') {
+        if (Tools::getValue('action') === 'add-to-cart') {
             $modal = $this->module->renderModal(
-                $this->context->cart,
                 (int) Tools::getValue('id_product'),
                 (int) Tools::getValue('id_product_attribute'),
                 (int) Tools::getValue('id_customization')
@@ -47,7 +46,7 @@ class Ps_ShoppingcartAjaxModuleFrontController extends ModuleFrontController
         ob_end_clean();
         header('Content-Type: application/json');
         exit(json_encode([
-            'preview' => $this->module instanceof Ps_Shoppingcart ? $this->module->renderWidget(null, ['cart' => $this->context->cart]) : '',
+            'preview' => $this->module->renderWidget(null, []),
             'modal' => $modal,
         ]));
     }
