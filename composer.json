@@ -13,7 +13,7 @@
     "php": ">=5.6"
   },
   "require-dev": {
-    "prestashop/php-dev-tools": "~3.0"
+    "prestashop/php-dev-tools": "~5"
   },
   "config": {
     "preferred-install": "dist",
