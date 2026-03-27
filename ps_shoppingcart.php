@@ -67,7 +67,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
     /**
      * @return string
      */
-    private function getCartSummaryURL()
+    protected function getCartSummaryURL()
     {
         return $this->context->link->getPageLink(
             'cart',
@@ -101,7 +101,7 @@ class Ps_Shoppingcart extends Module implements WidgetInterface
      * Provides an already presented object from the context if set.
      * If not, runs the presenter.
      */
-    private function getPresentedCart()
+    protected function getPresentedCart()
     {
         /*
          * We will use the already presented cart in the first place. It should be already in the template.
